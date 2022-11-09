@@ -1,0 +1,37 @@
+﻿<main class="matchParentWidth flexBoxVertical gravity">
+    <h1 style ="text-align: center;"><b> NEW ARRIVALS </b></h1>
+    <!--This is where the images will go-->
+    <figure class = "roundedEdgesLight flexBoxHorizontal gravity"> 
+        <div class = "over matchParent roundedEdgesLight"></div>                     <!--z-index equiv 1-->
+        <div class = "film flexBoxHorizontal" style = "z-index: 6">                  <!--z-index equiv 6-->
+            <div class = "pipe flexBoxHorizontal gravity matchParentHeightOnly">
+                <button class = "circle slideshowControls borderVisibleLight flexBoxHorizontal gravity" id="previous" style="border-color: green;" title="Previous image">  <!--Make the width equal to the height-->
+                    <span class="material-icons navigatorArrows cursor">arrow_back</span>
+                </button> 
+            </div>
+            <div class = "whitespace matchParentHeightOnly" style="flex: 5"></div>
+            <div class = "pipe flexBoxHorizontal gravity matchParentHeightOnly">
+                <button class="circle slideshowControls borderVisibleLight flexBoxHorizontal gravity" id="next" style="border-color: green" title="Next image">      <!--Make the width equal to the height-->
+                    <span class="material-icons navigatorArrows cursor">arrow_forward</span>
+                </button>
+            </div>
+        </div>        
+        <!--This image will constantly change. We will use javascript-->
+        <!--JUST MODIFY THE SRC VALUE LOL-->
+        <img src="~/Images/Model1.png" alt="Model1" class="imageFit" id = "image"/>               <!--z-index equiv 2-->
+        <figcaption class="film roundedEdgesLight flexBoxVertical gravity">                       <!--z-index equiv 3-->
+            <div class="whitespace matchParentWidthOnly" style="height:83%; border-top-left-radius: 5px; border-top-right-radius: 5px"></div>
+            <div id = "content" class="matchParentWidthOnly" style="height: 14.9%; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; background-color: rgb(0, 0, 0, 0.6); color: white; position: relative"> 
+                <div class = "film matchParent flexBoxVertical" style="border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; position: absolute; z-index: 4;"> <!--z-index equiv 4-->
+                    <!--Description of the product will go here-->
+                    <div class="flexBoxHorizontal gravity matchParentWidthOnly" id="ProductDescription">
+                        <span id="ItemHeader">New Ladies Shirt!</span>
+                        <br />
+                    </div>
+                </div>   
+            </div>
+            <div id="indicator" class = "flexBoxHorizontal gravity matchParentWidthOnly" style="height: 1.9%">
+            </div>
+        </figcaption>
+    </figure>
+</main>

@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Product";
+    Layout = "_Layout";
+    List<Product> allProducts = ViewBag.PassProducts as List<Product>;
+}
+
+@using Microsoft.AspNetCore.Http; 
+
+@model web_asignment1_Y2S1_2022.Models.Product
+
+<!--
+Done by: Li Zhe Yun
+Form logic handled by CustomerController.cs
+
+To debug this webpage, please ensure that the URL in your searchbar IS
+https://localhost:44330/Customer/Product
+-->
+
+<article class="matchParentWidthOnly"> 
+    <!--Contains products-->
+    <form class="matchParentWidthOnly">
+        @{
+            int rows = 0; 
+            int beg, end; 
+            beg = 0; end = 2;
+            do
+            {
+                <div class="row rowHeight"> 
+                    @{
+                        foreach(Product p in allProducts)
+                        {
+                            if (allProducts.IndexOf(p) >= beg && allProducts.IndexOf(p) <= end)
+                            {
+                                <div class="card itemBoxConfig"> 
+                                    <img src="~/Images/@p.ProductImage" class="card-img-top" alt="Image is not available at the moment" />
+                                    <div class="card-body"> 
+                                        <h5 class="card-title">@p.ProductName</h5>
+                                        <div class="card-text"> 
+                                            @string.Format("{0:C2}", p.Price)
+                                        </div>
+                                        <br />
+                                        <!--Send the current index position of the product back to thee controller-->
+                                        <button type="submit" asp-controller="Customer" asp-action="GetProductInfo" asp-route-id="@allProducts.IndexOf(p)" class="btn btn-primary">Add to shopping cart</button>
+                                    </div>
+                                </div>
+                            }
+                            ++beg; ++end; 
+                        } 
+                    }
+                </div>
+                ++rows; 
+            }
+            while (rows < allProducts.Count / 3);
+        }
+    </form>
+</article>

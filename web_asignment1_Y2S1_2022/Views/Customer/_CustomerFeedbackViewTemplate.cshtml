@@ -1,0 +1,175 @@
+﻿@{
+    ViewData["Title"] = "CreateFeedback";
+    Layout = "_Layout"; 
+}
+
+<!--
+    Done by: Li Zhe Yun
+    Partial View
+
+    Used by: 
+        1) CreateFeedback.cshtml 
+        2) Feedback.cshtml
+-->
+
+<!--Within the <main> tag-->
+<!--Change the front-end UI (We are just going to highlight it LUL) I dont know anymore-->
+<div class="over-feedback-customer-grp flexBoxHorizontal gravity matchParentWidthOnly spaceOut_row"> 
+    <!--Aside tag to store the navigation bar -->
+    <aside class="matchParent borderVisibleLight feedback-customer-grp roundedEdgesLight flexBoxVertical gravity"> 
+        <!--<div class="CreateNewFeedback"> contains a button where the user can go and -->
+        <div class="CreateNewFeedback matchParentWidthOnly"> 
+            <div class="button-container flexBoxHorizontal gravity matchParentWidthOnly borderVisibleMedium roundedEdgesLight">
+                <!--Create a plus sign (for decorative purposes)-->
+                <div class="flexBoxVertical matchParentHeightOnly gravity" style="flex: 0.5">
+                    <div class="flexBoxVertical" style="width: 30px; height: 30px"> 
+                        <div class="flexBoxHorizontal matchParentWidthOnly" style="height: 33.3333333%"> 
+                            <div class="whitespace matchParentHeightOnly" style="flex: 1"></div>
+                            <div class="whitespace matchParentHeightOnly" style="flex: 0.5; background-color: red"></div>
+                            <div class="whitespace matchParentHeightOnly" style="flex: 1"></div>
+                        </div>
+                        <div class="flexBoxHorizontal matchParentWidthOnly" style="height: 23.3333333%"> 
+                            <div class="whitespace matchParentHeightOnly" style="flex: 1; background-color: orange"></div>
+                            <div class="whitespace matchParentHeightOnly" style="flex: 1; background-color: purple"></div>
+                        </div>
+                        <div class="flexBoxHorizontal matchParentWidthOnly" style="height: 33.3333333%"> 
+                            <div class="whitespace matchParentHeightOnly" style="flex: 1"></div>
+                            <div class="whitespace matchParentHeightOnly" style="flex: 0.5; background-color: indigo"></div>
+                            <div class="whitespace matchParentHeightOnly" style="flex: 1"></div>
+                        </div>
+                    </div>
+                </div> 
+                <a class="matchParentHeightOnly flexBoxHorizontal gravity roundedEdgesLight" href="@Url.Action("CreateFeedback", "Customer")" style="flex: 1"> New Feedback </a> 
+            </div>
+        </div>
+        <!--Group all the icons together-->
+        <div class="sub-nav-body flexBoxVertical matchParentWidthOnly">
+            <a href="@Url.Action("Feedback", "Customer")" class="row-group flexBoxHorizontal roundedEdgesLight matchParentWidthOnly"> 
+                <div class="icon-container matchParentHeightOnly flexBoxHorizontal gravity"> 
+                    <div class="circle icon-box-decoration flexBoxHorizontal gravity"> 
+                        <span class="material-icons">feedback</span>
+                    </div> 
+                </div>
+                <div class="text-container matchParentHeightOnly flexBoxHorizontal align-left-row"> 
+                    <div class="elem flexBoxHorizontal matchParentHeightOnly gravity">
+                       All Feedbacks
+                    </div>
+                </div>
+            </a>
+            <br /> 
+            <a href="@Url.Action("Pending", "Customer")" class="row-group flexBoxHorizontal roundedEdgesLight matchParentWidthOnly"> 
+                <div class="icon-container matchParentHeightOnly flexBoxHorizontal gravity"> 
+                    <div class="circle icon-box-decoration flexBoxHorizontal gravity"> 
+                        <span class="material-icons">pending</span>
+                    </div> 
+                </div>
+                <div class="text-container matchParentHeightOnly flexBoxHorizontal align-left-row"> 
+                    <div class="elem flexBoxHorizontal matchParentHeightOnly gravity">
+                       Pending
+                    </div>
+                </div>
+            </a>
+            <br />
+            <a href="@Url.Action("Bookmarked", "Customer")" class="row-group flexBoxHorizontal roundedEdgesLight matchParentWidthOnly"> 
+                <div class="icon-container matchParentHeightOnly flexBoxHorizontal gravity"> 
+                    <div class="circle icon-box-decoration flexBoxHorizontal gravity"> 
+                        <span class="material-icons">bookmark</span>
+                    </div> 
+                </div>
+                <div class="text-container matchParentHeightOnly flexBoxHorizontal align-left-row"> 
+                    <div class="elem flexBoxHorizontal matchParentHeightOnly gravity">
+                        Bookmarked
+                    </div>
+                </div>
+            </a>
+            <br /> 
+            <a href="@Url.Action("Starred", "Customer")" class="row-group flexBoxHorizontal roundedEdgesLight matchParentWidthOnly"> 
+                <div class="icon-container matchParentHeightOnly flexBoxHorizontal gravity"> 
+                    <div class="circle icon-box-decoration flexBoxHorizontal gravity"> 
+                        <span class="material-icons">star</span>
+                    </div> 
+                </div>
+                <div class="text-container matchParentHeightOnly flexBoxHorizontal align-left-row">  
+                    <div class="elem flexBoxHorizontal matchParentHeightOnly gravity"> 
+                        Starred
+                    </div>
+                </div>
+            </a>
+            <br />
+            <a href="@Url.Action("Recents", "Customer")" class="row-group flexBoxHorizontal roundedEdgesLight matchParentWidthOnly"> 
+                <div class="icon-container matchParentHeightOnly flexBoxHorizontal gravity"> 
+                    <div class="circle icon-box-decoration flexBoxHorizontal gravity"> 
+                        <span class="material-icons">history</span>
+                    </div> 
+                </div>
+                <div class="text-container matchParentHeightOnly flexBoxHorizontal align-left-row"> 
+                    <div class="elem flexBoxHorizontal matchParentHeightOnly gravity"> 
+                        Recents
+                    </div>
+                </div>
+            </a>
+            <br /> 
+            <a href="@Url.Action("Deleted", "Customer")" class="row-group flexBoxHorizontal roundedEdgesLight matchParentWidthOnly"> 
+                <div class="icon-container matchParentHeightOnly flexBoxHorizontal gravity"> 
+                    <div class="circle icon-box-decoration flexBoxHorizontal gravity"> 
+                        <span class="material-icons">delete</span>
+                    </div> 
+                </div>
+                <div class="text-container matchParentHeightOnly flexBoxHorizontal align-left-row"> 
+                    <div class="elem flexBoxHorizontal matchParentHeightOnly gravity">
+                        Deleted
+                    </div>
+                </div>
+            </a>
+        </div> 
+    </aside>
+    <article class="matchParentHeightOnly borderVisibleLight feedback-customer-grp roundedEdgesLight flexBoxVertical"> 
+        @RenderBody()
+    </article>
+    <script type="text/javascript" language="javascript">
+        //When the user just loaded the page, then highlight the 'AllFeedbacks'
+        document.getElementsByClassName("elem")[0].style.backgroundColor = "yellow"; 
+        for (let i in document.getElementsByClassName("elem")){
+            if (window.location.href.toString().includes("Pending")){
+                if (i != 1){
+                    document.getElementsByClassName("elem")[i].style.backgroundColor = "transparent";
+                } 
+                else {
+                    document.getElementsByClassName("elem")[i].style.backgroundColor = "yellow";
+                }
+            }
+            else if(window.location.href.toString().includes("Bookmarked")){
+                if (i != 2){
+                    document.getElementsByClassName("elem")[i].style.backgroundColor = "transparent";
+                } 
+                else {
+                    document.getElementsByClassName("elem")[i].style.backgroundColor = "yellow";
+                }
+            }
+            else if (window.location.href.toString().includes("Starred")){
+                if (i != 3){
+                    document.getElementsByClassName("elem")[i].style.backgroundColor = "transparent";
+                } 
+                else {
+                    document.getElementsByClassName("elem")[i].style.backgroundColor = "yellow";
+                }
+            }
+            else if (window.location.href.toString().includes("Recents")){
+                if (i != 4){
+                    document.getElementsByClassName("elem")[i].style.backgroundColor = "transparent";
+                } 
+                else {
+                    document.getElementsByClassName("elem")[i].style.backgroundColor = "yellow";
+                }
+            }
+            else if (window.location.href.toString().includes("Deleted")){
+                if (i != 5){
+                    document.getElementsByClassName("elem")[i].style.backgroundColor = "transparent";
+                } 
+                else {
+                    document.getElementsByClassName("elem")[i].style.backgroundColor = "yellow";
+                }
+            }
+        } 
+    </script>
+</div>

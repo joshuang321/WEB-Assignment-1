@@ -1,0 +1,39 @@
+﻿@model IEnumerable<web_asignment1_Y2S1_2022.Models.SalesTransactions>
+
+@{
+    ViewData["Title"] = "ViewTransaction";
+}
+<h1>View Transactions</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                <a asp-action="IssueVoucher" asp-controller="MarketManager"
+                   asp-route-MemberId="@item.MemberID">Issue Voucher</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div>
+    <a asp-action="Index">Back to HomePage</a>
+</div>

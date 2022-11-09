@@ -1,0 +1,183 @@
+﻿/*constant.css written by Li Zhe Yun*/
+/*==================================================*/
+/* CSS CONSTANT SELECTORS */
+/*--------------------------------------------------*/
+/* Declaring flexboxes */
+.flexBoxHorizontal {
+    display: flex;
+}
+
+.flexBoxVertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.block {
+    display: block;
+}
+/*---------------------------------------------------*/
+/*Match parent width / height*/
+.matchParentHeightOnly {
+    height: 100%;
+}
+
+.matchParentWidthOnly {
+    width: 100%;
+}
+
+.matchParent {
+    width: 100%;
+    height: 100%;
+}
+/*---------------------------------------------------*/
+/*Rounded edges*/
+.roundedEdgesLight {
+    border-radius: 5px;
+}
+
+.roundedEdgesMedium {
+    border-radius: 10px;
+}
+
+.roundedEdgesHeavy {
+    border-radius: 25px;
+}
+
+.circle {
+    border-radius: 100%;
+}
+/*----------------------------------------------------*/
+/*Positioning of items within a flexbox*/
+.gravity {
+    justify-content: center;
+    align-items: center;
+}
+
+.center_row {
+    justify-content: center;
+}
+
+.center_column {
+    align-items: center;
+}
+
+.spaceOut_row {
+    justify-content: space-between;
+}
+
+.align-left-row {
+    justify-content: flex-start;
+}
+
+.align-right-row {
+    justify-content: flex-end; 
+}
+
+.align-right-column {
+    align-items: flex-end; 
+}
+
+.align-left-column {
+    align-items: flex-start; 
+}
+
+.spaceOut_column {
+    align-items: stretch; 
+}
+/*----------------------------------------------------*/
+/*Ensuring that the image fits within a defined container...*/
+.imageFit {
+    max-height: 100%;
+}
+/*----------------------------------------------------*/
+/*Removing the bullet point. This removes all numbering and bullet points for <ol> and <ul> */
+.no-bullet-point {
+    list-style-type: none;
+}
+/*----------------------------------------------------*/
+/*Line height spacing*/
+.halfLine {
+    line-height: 0.5;
+}
+
+.singleLine {
+    line-height: 1.0;
+}
+
+.doubleLine {
+    line-height: 2.0;
+}
+
+.tripleLine {
+    line-height: 3.0;
+}
+/*----------------------------------------------------*/
+/*Show border (For debugging purposes and / or CSS styling)*/
+.borderVisibleNormal {
+    border-style: solid;
+}
+
+.borderVisibleLight {
+    border-style: solid;
+    border-width: 0.5px;
+}
+
+.borderVisibleMedium {
+    border-style: solid;
+    border-width: 2px;
+}
+/*Remove all existing borders*/
+.borderDisappear {
+    border: none; 
+}
+/*----------------------------------------------------*/
+/**
+ *Make all <li> elements become left-aligned when not needed 
+ *[You can use this for any <li> element who is a child of a <ul> or <ol> tag]
+ */
+.ul-ol-align-left {
+    padding-left: 0px;
+}
+/*----------------------------------------------------*/
+/*Change the cursor to type pointer when hovered over*/
+.cursor {
+    cursor: pointer;
+}
+/*----------------------------------------------------*/
+/**
+ *Transparent film to correct overlay elements from being affected by the alpha 
+ *value caused by the element below the overlay element
+ *[ADD THE Z-INDEX ACCORDINGLY]
+ */
+.film {
+    position: absolute;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+}
+/*----------------------------------------------------*/
+/*Create an invisible CSS whitespace [MAINLY FOR FLEXBOXES]*/
+.whitespace {
+    display: block;
+    background-color: transparent;
+}
+/*----------------------------------------------------*/
+/*Remove stubborn border around the fieldset tag*/
+fieldset {
+    border: 0; 
+    border-style: none; 
+    border-width: 0px; 
+}
+/*----------------------------------------------------*/
+/*Reset all the required styling from the <a> tag*/
+a {
+    color: black; 
+    text-decoration: none; 
+}
+
+/*Remove the underline, and keep the text-color as black when hovered*/
+a:is(:hover){
+    text-decoration: none; 
+    color: black; 
+}
+/*====================================================*/

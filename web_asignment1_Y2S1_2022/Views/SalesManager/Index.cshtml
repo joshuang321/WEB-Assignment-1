@@ -1,0 +1,12 @@
+﻿@model IEnumerable<web_asignment1_Y2S1_2022.Models.Customer>
+
+@{
+    ViewData["Title"] = "View Customers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="PageTitle">View Customers</h4>
+<p><a asp-action="Create">Create New Customers</a></p>
+<!-- Add a partial view to display a list of staff records
+ in a tabular format. -->
+<partial name="~/Views/SalesManager/_ViewCustomer.cshtml" model="@Model" />

@@ -1,0 +1,20 @@
+﻿@{string activation;}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a class="navbar-brand" href="#">Products</a>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item@{
+		activation = ("ViewProduct" == ViewData["Page"] as string) ? " active" : "";
+										@activation
+}">
+				<a class="nav-link" href="~/ProductManager/Index">View Products</a>
+			</li>
+			<li class="nav-item@{
+		activation = ("CreateProduct" == ViewData["Page"] as string) ? " active" : "";
+										@activation
+}">
+				<a class="nav-link" href="~/ProductManager/CreateProduct">Create Product</a>
+			</li>
+		</ul>
+	</div>
+</nav>

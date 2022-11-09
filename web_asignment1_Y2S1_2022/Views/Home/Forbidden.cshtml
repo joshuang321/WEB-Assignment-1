@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "403 Forbidden";
+    Layout = null; 
+}
+
+<!-- 
+    Done by: Li Zhe Yun 
+
+    This webpage will only show up if a user of a particular attempts to visit 
+
+    To debug this webpage, ensure that the URL in your searchbar iS 
+    https://localhost:44330/Home/Forbidden
+-->
+
+<!DOCTYPE html> 
+<html>
+    <head> 
+        <meta charset="utf-8" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" type="text/css"/>
+        <link rel="stylesheet" href="~/css/constant.css" type="text/css"/>
+        <link rel="stylesheet" href="~/css/normalise.css" type="text/css"/> 
+        <link rel="stylesheet" href="~/css/forbidden.css" type="text/css"/>
+        <!-- Import the required google font API -->
+        <link href = "https://fonts.googleapis.com/css?family=Varela+Round" rel = "stylesheet" type = "text/css"/>
+        <!--Import the required google icons API-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css"/>
+    </head>
+    <body class="matchParent flexBoxHorizontal gravity"> 
+        <div id="messageBody" class="borderVisibleNormal roundedEdgesLight flexBoxHorizontal"> 
+            <div id="errorIconContainer" class="matchParentHeightOnly flexBoxHorizontal gravity"> 
+                <div class="circle"> 
+                    <span class="material-icons" style="font-size:40px; color: red;">cancel</span>
+                </div>
+            </div>
+            <div id="errorMessageContainer" class="matchParentHeightOnly flexBoxVertical gravity"> 
+                <h3>You are not allowed to access this content</h3>
+                <br />
+                <small>You do not have permission to access this content. Please inform the developer of the website if you think that there was a mistake</small>
+            </div>
+        </div>
+    </body>
+</html> 

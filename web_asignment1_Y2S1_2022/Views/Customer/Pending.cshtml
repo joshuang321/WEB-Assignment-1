@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Http; 
+
+@{
+    ViewData["Title"] = "Pending";
+    Layout = "_CustomerFeedbackViewTemplate"; 
+    string feedbackTitle = Context.Session.GetString("FeedbackTitle");  //title of the feedbakc 
+    string feedbackContents = Context.Session.GetString("FeedbackText");  //contents of the feedback 
+    string feedbackImageString = Context.Session.GetString("FeedbackImage");  //image path that will be needed by the code to retrieve the images again from the folder
+    Feedback feedback = null; 
+    if ((feedbackTitle != null && feedbackContents != null))
+    {
+        feedback = new Feedback
+        {
+            Title = feedbackTitle, 
+            Text = feedbackContents,
+            ImageFileName = feedbackImageString == null ? feedbackImageString : "download.png"
+        }; 
+    }
+}
+
+<!--
+    This page only displays the feedback that has not been answered by the staff at ZZFashion
+
+    Done by: Li Zhe Yun 
+-->
+
+<div class="main-feedback-body">
+    <h1><b>Pending</b></h1>
+    <div class="feedback-list roundedEdgesMedium flexBoxVertical matchParentWidthOnly borderVisibleMedium" style="align-items: center"> 
+        <div class="feedback-inbox-controls roundedEdgesMedium flexBoxHorizontal matchParentWidthOnly"> 
+            <!--Feedback box controls-->
+            <div class="feedback-inbox-controls-internal-wrapper matchParentHeightOnly flexBoxHorizontal gravity"> 
+                <div class="function-holder matchParentHeightOnly flexBoxHorizontal gravity">
+                    <span class="material-icons cursor" title="Refresh">refresh</span>
+                </div>
+                <div class="function-holder matchParentHeightOnly flexBoxHorizontal gravity">
+                    <div class="flexBoxHorizontal gravity matchParentHeightOnly">
+                        <div class="checkbox borderVisibleMedium flexBoxHorizontal gravity roundedEdgesLight"> </div>
+                    </div>
+                    <div class="flexBoxHorizontal gravity matchParentHeightOnly"> 
+                        <label style="font-size: 20px">Select All</label>
+                    </div> 
+                </div>
+                <div class="function-holder matchParentHeightOnly flexBoxHorizontal gravity"> 
+                    <span class="material-icons cursor" title="Bookmark">bookmark</span>
+                </div>
+                <div class="function-holder matchParentHeightOnly flexBoxHorizontal gravity"> 
+                    <span class="material-icons cursor" title="Delete">delete</span>
+                </div>
+            </div>
+        </div> 
+        <div class="feedback-list-cluster roundedEdgesLight matchParentWidthOnly flexBoxVertical" style="align-items: center"> 
+
+        </div> 
+    </div> 
+</div> 
+

@@ -1,0 +1,163 @@
+﻿@{
+    ViewData["Title"] = "Customer Login";
+    Layout = "_LoginViewTemplate";
+    string _aspFor = "asp-for=";
+    string genericRole = Context.Session.GetString("GenericRole"); 
+    string identifier = string.Empty; 
+}
+
+@using Microsoft.AspNetCore.Http; 
+
+@model Mixed //using this model
+
+<!--
+    Done by: Li Zhe Yun
+    Form logic handled by LoginCustomerController.cs
+    Form data posted to database through: LoginCustomerController.cs
+
+    To debug this webpage, please ensure that the URL in your searchbar IS
+    https://localhost:44330/LoginCustomer/Login  
+-->
+
+<!--Contains the sign in form! DO NOT MODIFY-->
+<div class="matchParent"> 
+    <!--Defines the form container-->
+    <h1 style="text-align: center">Log In</h1>
+    <form asp-controller="LoginCustomer" asp-action="Verification" method="post" class="matchParent"> 
+        <!--One row for each login field. This fieldset will be a flex container-->
+        <fieldset class="flexBoxVertical matchParent"> 
+            <!--Include a toggler that allows the user to switch between signing in as a user and a customer-->
+            <div class="flexBoxHorizontal fieldGroup matchParentWidthOnly gravity"> 
+                <div class="labelTagContainer flexBoxHorizontal matchParent gravity">
+                    <!--When the user clicks on this toggler -->
+                    <div class="matchParentHeightOnly flexBoxHorizontal gravity spaceOut_row" style="flex: 2"> 
+                        <span id="roleGeneric">Customer</span>login
+                    </div>
+                    <!--Add another href here that would redirect to the part where the -->
+                    <div class="matchParent flexBoxHorizontal gravity spaceOut_row" style="flex: 1"> 
+                        <button asp-controller="LoginCustomer" asp-action="ChangeUserRole" type="button" id="toggler" class="btn btn-primary">Sign in as <span id="roleIdentifier">Staff</span></button>
+                    </div>
+                    <script type="text/javascript" language="javascript"> 
+                        //This javascript snippet will be responsible for changing the text within the 
+                        document.getElementById("toggler").addEventListener("click", () => {
+                            if (document.getElementById("roleGeneric").innerHTML === "Customer"){
+                                document.getElementById("roleGeneric").innerHTML = "Staff"; 
+                                document.getElementById("roleIdentifier").innerHTML = "Customer"; 
+                            }
+                            else if (document.getElementById("roleGeneric").innerHTML === "Staff"){
+                                document.getElementById("roleGeneric").innerHTML = "Customer"; 
+                                document.getElementById("roleIdentifier").innerHTML = "Staff"; 
+                            }
+                        }); 
+                    </script>
+                </div> 
+            </div> 
+            <!--Used by the user for typing in his or her username-->
+            <div class="flexBoxHorizontal fieldGroup matchParentWidthOnly gravity"> 
+                <div class="labelTagContainer flexBoxHorizontal matchParentHeightOnly gravity">
+                    <label @_aspFor"@{
+                        if (genericRole.Equals("Customer"))
+                        {
+                            identifier = "MemberID"; 
+                            @identifier
+                        }
+                        else if (genericRole.Equals("Staff"))
+                        {
+                            identifier = "StaffID"; 
+                            @identifier
+                        }
+                    }"> 
+                        @{
+                            if (genericRole.Equals("Customer"))
+                            {
+                                identifier = "MemberID: "; 
+                                @identifier
+                            }
+                            else if (genericRole.Equals("Staff"))
+                            {
+                                identifier = "StaffID: "; 
+                                @identifier
+                            }
+                        } 
+                    </label>
+                </div> 
+                <!--Don't need the 'required' attribute as it will be handled by Customer.cs Model-->
+                <div class="inputTagContainer flexBoxHorizontal matchParentHeightOnly gravity">
+                    <input name="custMemberID" placeholder="MemberID" @_aspFor"@{
+                        if (genericRole.Equals("Customer"))
+                        {
+                            identifier = "MemberID"; 
+                            @identifier
+                        }
+                        else if (genericRole.Equals("Staff"))
+                        {
+                            identifier = "StaffID"; 
+                            @identifier
+                        }
+                    }"/>
+                </div> 
+                <span asp-validation-for="MemberID"> </span>
+            </div>
+            <!--Used by the user for typing in his or her password-->
+            <div class="flexBoxHorizontal fieldGroup matchParentWidthOnly gravity"> 
+                <div class="labelTagContainer flexBoxHorizontal matchParentHeightOnly gravity">
+                    <label asp-for="Password" for="custPassword">Password: </label>
+                </div> 
+                <!--Don't need the 'required' attribute as it will be handled by Customer.cs Model-->
+                <div class="inputTagContainer flexBoxHorizontal matchParentHeightOnly gravity">
+                    <input name="custPassword" asp-for="Password" placeholder="Password"/> 
+                </div>
+                <span asp-validation-for="Password"> </span>
+            </div>
+            <br />
+            <!--Insert a checkbox that allows the system to remember the user & forgot password-->
+            <div class="flexBoxHorizontal fieldGroup matchParentWidthOnly gravity"> 
+                <!--Hehehe I want to try and brush up my CSS skills so am NOT gonna use a checkbox here :> -->
+                <div class="flexBoxHorizontal gravity matchParentHeightOnly" style="flex: 0.5"> 
+                    <div class="whitespace matchParentHeaightOnly" style="flex: 0.5"></div>
+                    <div class="flexBoxHorizontal gravity matchParentHeightOnly" style="flex: 1">
+                        <div class="checkbox borderVisibleMedium flexBoxHorizontal gravity roundedEdgesLight"> </div>
+                    </div>
+                    <div class="flexBoxHorizontal gravity matchParentHeightOnly" style="flex: 1"> 
+                        <label style="font-size: 10px">Remember Me</label>
+                    </div> 
+                    <div class="whitespace matchParentHeightOnly" style="flex: 0.5"></div>
+                </div> 
+                <div class="flexBoxHorizontal gravity matchParentHeightOnly" style="flex: 1">
+                    <a href="@Url.Action("LoginVerificationPromptEmail", "LoginCustomer")" style="color: lightblue">Forgot your password?</a>
+                </div>
+            </div>
+            <!--Display the error message over here-->
+            <!--Set the background color of the <div> tag to red color, the text color within the <span> tag must be set to white color-->
+            <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                    <div class="main-internal-1 flexBoxHorizontal matchParentHeightOnly align-left-row">
+                        <div class="signInError matchParentWidthOnly flexBoxHorizontal gravity roundedEdgesLight"> 
+                            @{
+                                if (TempData["Login Failed"] != null)
+                                {
+                                    if (TempData["Login Failed"].ToString().Length > 0)
+                                    {
+                                        <small>@TempData["Login Failed"]</small>
+                                        <br /><br />
+                                    }
+                                    else
+                                    {
+                                        <br /><br />
+                                    }
+                                } 
+                            }
+                        </div>
+                    </div> 
+                </div> 
+            </div>   
+            <!--This is used to store the log in button-->
+            <div class="logInButtonContainer flexBoxHorizontal matchParentWidthOnly gravity"> 
+                <!--This button will log the user in when the user clicks on this button-->
+                <div class="whitespace matchParentHeightOnly" style="flex: 0.35"></div>
+                    <button type="submit" class="signIn flexBoxHorizontal matchParentHeightOnly gravity cursor roundedEdgesLight" style="flex: 2">Sign In</button>
+                <div class="whitespace matchParentHeightOnly" style="flex: 0.5"></div>
+            </div>
+        </fieldset>
+    </form>
+</div>

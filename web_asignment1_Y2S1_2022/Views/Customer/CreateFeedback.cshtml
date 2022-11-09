@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "CreateFeedback";
+    Layout = "_CustomerFeedbackViewTemplate"; 
+}
+
+@model web_asignment1_Y2S1_2022.Models.Feedback; 
+
+<!--
+    Done by: Li Zhe Yun
+    Form logic handled by CustomerController.cs
+    Form data posted to database through: CustomerController.cs
+
+    To debug this webpage, please ensure that the URL in your searchbar IS
+    https://localhost:44330/Customer/CreateFeedback 
+-->
+
+<!--Inside the article tag-->
+<div class="main-feedback-body">
+    <h1><b>Give feedback</b></h1>
+    <div class="feedback-group matchParentWidthOnly borderVisibleLight"> 
+        <form asp-controller="Customer" asp-action="FeedbackHandling" method="post"> 
+            <!--This would be the form where the user would be entering his or her feedback-->
+            <fieldset class="flexBoxVertical roundedEdgesLight matchParent"> 
+                <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                    <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                        <div class="main-internal-1 flexBoxVertical matchParentHeightOnly align-left-row">
+                            <!--The subject field, where the user would be able to input the -->
+                            <div class="flexBoxHorizontal matchParentWidthOnly gravity"> 
+                                <!--This field group is controlled by the Title property of a Feedback object-->
+                                <div class="labelPortion matchParentHeightOnly"> 
+                                    <label asp-for="Title">Subject</label>
+                                </div> 
+                                <div class="inputPortion matchParentHeightOnly">
+                                    <input name="FeedbackSubject" asp-for="Title" type="text" class="matchParentWidthOnly form-control" placeholder="Please type the subject of your feedback over here"/> 
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> 
+                </div> 
+                <br />
+                <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                    <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                        <div class="main-internal-1 flexBoxVertical matchParentHeightOnly align-left-row">
+                            <!--This would be the textarea where the user would be -->
+                            <div class="flexBoxHorizontal matchParentWidthOnly gravity">
+                                <!--This field group is controlled by the Text property of a Feedback object-->
+                                <div class="labelPortion matchParentHeightOnly"> 
+                                    <label asp-for="Text">Feedback</label>
+                                </div> 
+                                <div class="inputPortion matchParentHeightOnly"> 
+                                    <textarea name="FeedbackContent" asp-for="Text" class="matchParentWidthOnly" rows="5" placeholder="Write your feedback over here... "></textarea> 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                </div> 
+                <br />
+                <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                    <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                        <div class="main-internal-1 flexBoxVertical matchParentHeightOnly align-left-row">
+                            <div class="group flexBoxHorizontal matchParentWidthOnly">
+                                <!--This field group is controlled by the ImageFileName property of the Feedback class-->
+                                <div class="dragAndDrop roundedEdgesLight borderVisibleLight matchParentWidthOnly flexBoxVertical gravity"> 
+                                    <div class="labelPortion matchParentHeightOnly">
+                                        <label asp-for="ImageFileName">Image</label>
+                                    </div> 
+                                    <div class="inputPortion matchParentHeightOnly">
+                                        <!--When -->
+                                        <input asp-for="ImageFileName" name="ImageFileName" type="file" accept="image/jpeg" />
+                                    </div> 
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> 
+                </div>
+                <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                    <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                        <div class="main-internal-1 flexBoxVertical matchParentHeightOnly align-left-row">
+                            <small>You are only allowed to upload one image per feedback</small>
+                        </div> 
+                    </div> 
+                </div> 
+                <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                    <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                        <div class="main-internal-1 flexBoxVertical matchParentHeightOnly align-left-row">
+                            <div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div> 
+                        </div> 
+                    </div> 
+                </div> 
+                <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                    <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                        <div class="main-internal-1 flexBoxVertical matchParentHeightOnly align-left-row">
+
+                        </div> 
+                    </div> 
+                </div> 
+            </fieldset>
+        </form>
+    </div>
+</div> 

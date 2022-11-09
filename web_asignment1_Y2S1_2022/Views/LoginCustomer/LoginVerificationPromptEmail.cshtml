@@ -1,0 +1,112 @@
+﻿@using Microsoft.AspNetCore.Http; 
+
+@{
+    ViewData["Title"] = "LoginVerificationPromptEmail";
+    Layout = "_LoginViewTemplate";
+    string errorMessage =   TempData["Message"] != null && TempData["Http Status Code"] != null
+                            ?
+                                TempData["Message"] + "\nError Status Code: " + TempData["HTTP Status Code"] + "\n" +
+                                Context.Session.GetString("Invalid") != null
+                                ?
+                                    Context.Session.GetString("Invalid")
+                                :
+                                    ""
+                            :
+                                //Test for whether InvalidString is null or not, if not go into the else clause
+                                Context.Session.GetString("Invalid") != null
+                                ?
+                                    Context.Session.GetString("Invalid")
+                                :
+                                    ""; 
+    string errorInfo = Context.Session.GetString("Status");
+    var peek = TempData["Item"]; 
+    var errorMessageInvalid = TempData["Invalid"]; 
+}
+
+@model web_asignment1_Y2S1_2022.Models.PasswordRecoveryEmail; 
+
+<!--
+    Done by: Li Zhe Yun
+    Form logic handled by LoginCustomerController.cs
+    Form data posted to database through: LoginCustomerController.cs
+
+    To debug this webpage, please ensure that the URL in your searchbar IS
+    https://localhost:44330/LoginCustomer/LoginVerification  
+-->
+
+<div class="matchParent">
+    <h1 style="text-align: center">Account Recovery</h1>
+    <div class="status flexBoxHorizontal roundedEdgesLight gravity">
+        <small style="text-align: center"><small>@errorInfo</small></small> 
+    </div>
+    @{
+        if (errorInfo == null)
+        {
+            <br />
+        }
+    }
+    <form asp-controller="LoginCustomer" asp-action="SendVerificationCodeToEmailAddr" method="post" class="matchParent">
+         <fieldset class="flexBoxVertical matchParent"> 
+             <!--This flexbox is used to contain the 'Enter your 4-digit OTP...' message-->
+            <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                    <div class="main-internal-1 flexBoxHorizontal matchParentHeightOnly align-left-row">
+                        <small>You will now need to provide your email so that we can send you a verifiction code</small>
+                    </div> 
+                </div> 
+            </div> 
+            <br /><br />
+            <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                    <div class="main-internal-1 flexBoxHorizontal matchParentHeightOnly align-left-row">
+                        <label for="RecoveryEmailAddress">Email Address</label>
+                        <input name="RecoveryEmailAddress" asp-for="RecoveryEmail" type="email" placeholder="RecoveryEmailAddress" class="matchParentWidthOnly"/>
+                    </div> 
+                </div> 
+            </div> 
+            <br />
+            <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                    <div class="main-internal-1 flexBoxHorizontal matchParentHeightOnly align-left-row">
+                        <button class="cursor matchParentWidthOnly roundedEdgesLight" id="submitCode" type="submit">Send Verification Code</button>
+                    </div> 
+                </div> 
+            </div> 
+            <br />
+            @{
+                if (TempData["Message"] == null && TempData["Http Status Code"] == null)
+                {
+                    <br />
+                }
+                else
+                {
+                    <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                        <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                            <div class="main-internal-1 flexBoxHorizontal matchParentHeightOnly align-left-row">
+                                <div style="background-color: red; color: white" class="gravity flexBoxHorizontal matchParentWidthOnly roundedEdgesLight"> 
+                                    <small><small>@errorMessage</small></small>
+                                </div>
+                            </div> 
+                        </div> 
+                    </div>
+                }
+                if (errorMessageInvalid != null)
+                {
+                     <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                        <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                            <div class="main-internal-1 flexBoxHorizontal matchParentHeightOnly align-left-row">
+                                <div style="background-color: red; color: white" class="gravity flexBoxHorizontal matchParentWidthOnly roundedEdgesLight">
+                                     <small><small>@errorMessageInvalid</small></small>
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div>
+                }
+                else
+                {
+                    <br /> 
+                }
+            }
+         </fieldset> 
+    </form>
+</div> 

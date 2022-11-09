@@ -1,0 +1,293 @@
+﻿@{
+    ViewData["Title"] = "Change";
+    Layout = "_CustomerProfile";
+    var data = ViewBag.Message;
+    string errorMessage = "Data not available";
+    string cannotUpdate = "This field is not updatable"; 
+    string _readonly = "readonly"; 
+    string _aspFor = "asp-for="; 
+    string attrName = "MAddress";
+    string currentPropertyName = string.Empty;
+} 
+
+@model Mixed
+
+
+<!--Note: 
+    The customer can only update the following fields: 
+    1) ResidentialAddress
+    2) EmailAddress
+    3) PhoneNumber
+--> 
+
+<div class="base matchParentWidthOnly flexBoxVertical gravity">
+    <h1>Change Personal Particulars</h1>
+    <form asp-controller="Customer" asp-action="SetNewPersonalParticulars" class="roundedEdgesLight"> 
+        <div class="form-group row"> 
+            <!--Perform string "concatenation"-->
+            <label class="col-md-5 roundedEdgesLight" @_aspFor"@{ 
+                if (data is Customer)
+                {
+                    currentPropertyName = "MName"; 
+                    @currentPropertyName
+                }
+                else if (data is Staff)
+                {
+                    currentPropertyName = "SName"; 
+                    @currentPropertyName
+                }
+            }"> 
+                Name: 
+            </label>
+            <!--Insert username here-->
+            <input title="This field is not updatable" readonly type="text" id="Username" class="col-md-5 form-control" 
+            placeholder="@{
+                if (data is Customer)
+                {
+                    @data.MName
+                }
+                else if (data is Staff)
+                {
+                    @data.SName
+                }
+            }" @_aspFor"@{
+                if (data is Customer)
+                {
+                    currentPropertyName = "MName"; 
+                    @currentPropertyName
+                }
+                else if (data is Staff)
+                {
+                    currentPropertyName = "SName"; 
+                    @currentPropertyName
+                }
+            }"/> 
+        </div>
+        <br /> 
+        <div class="form-group row"> 
+            <label class="col-md-5 roundedEdgesLight" @_aspFor"@{
+                if (data is Customer)
+                {
+                    currentPropertyName = "MGender"; 
+                    @currentPropertyName
+                }
+                else if (data is Staff)
+                {
+                    currentPropertyName = "SGender"; 
+                    @currentPropertyName
+                }
+            }"> 
+                Gender: 
+            </label>
+            <input title="This field is not updatable" readonly id="UserGender" class="col-md-5 form-control" 
+            placeholder="@{
+                if (data is Customer){
+                    @data.MGender
+                }
+                else if (data is Staff)
+                {
+                    @data.SGender
+                }
+            }" @_aspFor"@{
+                if (data is Customer)
+                {
+                    currentPropertyName = "MGender"; 
+                    @currentPropertyName
+                }
+                else if (data is Staff)
+                {
+                    currentPropertyName = "SGender"; 
+                    @currentPropertyName
+                }
+            }"/>
+        </div>
+        <br /> 
+        <div class="form-group row"> 
+            <label asp-for="MBirthDate" class="col-md-5 roundedEdgesLight"> 
+                Date Of Birth: 
+            </label>
+            <input asp-for="MBirthDate" title="This field is not updatable" readonly id="UserDOB" class="col-md-5 form-control" 
+            placeholder="@{
+                if (data is Customer){
+                    @data.MBirthDate.ToShortDateString()
+                }
+                else if (data is Staff)
+                {
+                    @errorMessage
+                }
+            }"/>
+        </div>
+        <br /> 
+        <div class="form-group row"> 
+            <label class="col-md-5 roundedEdgesLight" @_aspFor"@{
+                if (data is Customer)
+                {
+                    currentPropertyName = "MEmailAddr"; 
+                    @currentPropertyName
+                }
+                else if (data is Staff)
+                {
+                    currentPropertyName = "SEmailAddr"; 
+                    @currentPropertyName
+                }
+            }"> 
+                Email Address: 
+            </label>
+            <input type="email" name="NewUserEmailAddr" id="UserEmailAddr" class="col-md-5 form-control" 
+            placeholder="@{
+                if (data is Customer)
+                {
+                    if (data.MEmailAddr.Length > 0)
+                    {
+                        @data.MEmailAddr
+                    }
+                    else 
+                    {
+                        @errorMessage
+                    }
+                }
+                else if (data is Staff)
+                {
+                    @data.SEmailAddr
+                }
+            }" @_aspFor"@{
+                if (data is Customer)
+                {
+                    currentPropertyName = "MEmailAddr"; 
+                    @currentPropertyName
+                }
+                else if (data is Staff)
+                {
+                    currentPropertyName = "SEmailAddr"; 
+                    @currentPropertyName
+                }
+            }"/> 
+        </div>
+        <br /> 
+        <div class="form-group row"> 
+            <label asp-for="MAddress" class="col-md-5 roundedEdgesLight"> 
+                Residential Address: 
+            </label>
+            <input name="UserNewResidentialAddress" id="UserResidentialAddr" class="col-md-5 form-control" 
+            placeholder="@{
+                if (data is Customer)
+                {
+                    if (data.MAddress.Length > 0)
+                    {
+                        @data.MAddress
+                    }
+                    else
+                    {
+                        @errorMessage
+                    }
+                }
+                else if(data is Staff)
+                {
+                    //Email Address is somewhat not applicable for staff
+                    @errorMessage
+                }
+            }" title="@{
+                //Add title attribute if data is a Staff object
+                if (data is Staff)
+                {
+                    @cannotUpdate;
+                }
+                else if (data is Customer)
+                {
+                    @string.Empty; 
+                }
+            }" 
+
+            @{ 
+               if (data is Staff) 
+               { 
+                   @_readonly 
+               } 
+            } 
+
+            @{
+                //Apply the asp-for attribute if it is a customer
+                //only gives asp-for=
+                if (data is Customer)
+                {
+                    @_aspFor
+                }
+            }"@{
+                if (data is Customer)
+                {
+                    @attrName 
+                }
+            }" />
+        </div> 
+        <br /> 
+        <div class="form-group row"> 
+            <label asp-for="MCountry" class="col-md-5 roundedEdgesLight"> 
+                Country: 
+            </label>
+            <input asp-for="MCountry" title="This field is not updatable" readonly id="UserCountry" class="col-md-5 form-control" 
+            placeholder="@{
+                if (data is Customer)
+                {
+                    @data.MCountry
+                }
+                else if (data is Staff)
+                {
+                    //Country also somewhat not applicable to staff 
+                    @errorMessage
+                }
+            }"/> 
+        </div> 
+        <br /> 
+        <div class="form-group row"> 
+            <label class="col-md-5 roundedEdgesLight" 
+            @_aspFor"@{
+                if (data is Customer)
+                {
+                    currentPropertyName = "MTelNo"; 
+                    @currentPropertyName
+                }
+                else if (data is Staff)
+                {
+                    currentPropertyName = "STelNo"; 
+                    @currentPropertyName
+                }
+            }"> 
+                Telephone Number: 
+            </label>
+            <input type="tel" name="UserNewTelNo" id="UserTelNo" class="col-md-5 form-control" 
+            placeholder="@{
+                if (data is Customer)
+                {
+                    if (data.MTelNo.Length > 0)
+                    {
+                        @data.MTelNo
+                    }
+                    else
+                    {
+                        @errorMessage
+                    }
+                }
+                else if (data is Staff)
+                {
+                    @data.STelNo
+                }
+            }" @_aspFor"@{
+                if (data is Customer)
+                {
+                    currentPropertyName = "MEmailAddr"; 
+                    @currentPropertyName
+                }
+                else if (data is Staff)
+                {
+                    currentPropertyName = "SEmailAddr"; 
+                    @currentPropertyName
+                }
+            }"/> 
+        </div> 
+        <!--Introduce a set of buttons in which the user can use to update his or her profile-->
+        <button type="submit" asp-controller="Customer" asp-action="SetNewPersonalParticulars" class="btn btn-primary">Save</button>
+        <button type="submit" asp-controller="Customer" asp-action="Clear" class="btn btn-primary" style="background-color: red">Clear</button>
+        <button type="submit" asp-controller="Customer" asp-action="Quit" class="btn btn-primary" style="background-color: white; border-color: red; color: red">Back</button>
+        <br /> 
+    </form>
+</div> 

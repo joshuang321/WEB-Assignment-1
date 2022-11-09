@@ -1,0 +1,89 @@
+﻿<!--
+    Completed by: Li Zhe Yun
+    For: WEB Assignment
+    
+    This shared layout is used by: 
+
+    1) LoginCustomer/Login.cshtml 
+    2) LoginCustomer/LoginVerification.cshtml
+    3) LoginCustomer/SetNewPassword.cshtml
+
+    To debug (1): Ensure that the URL in the search bar IS 
+    https://localhost:44330/LoginCustomer/Login  
+
+    To debug (2): Ensure that the URL in the search bar IS 
+    https://localhost:44330/LoginCustomer/LoginVerification
+
+    To debug (3): Ensure that the URL in the search bar IS 
+    https://localhost:44330/LoginCustomer/SetNewPassword
+-->
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"/> 
+        <!--Include bootstrap-->
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" type="text/css"/>
+        <!--Apply constant CSS ruleset to this HTML document-->
+        <link href = "~/css/constant.css" rel="stylesheet" type="text/css"/>
+        <!--Apply custom CSS to this HTML document-->
+        <link href="~/css/login.css" rel="stylesheet" type="text/css"/> 
+        <!--Add the normalise css for this HTML document-->
+        <link href="~/css/normalise.css" rel="stylesheet" type="text/css"/> 
+        <!-- Import the required google font API -->
+        <link href = "https://fonts.googleapis.com/css?family=Varela+Round" rel = "stylesheet" type = "text/css"/>
+        <!--Import the required google icons API-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+        <title> @ViewData["Title"] </title>
+    </head>
+    <body> 
+        <div class="loading matchParent flexBoxHorizontal gravity"> 
+            <div class="card flexBoxHorizontal gravity">
+                <small class="card-text" style="text-align: center">
+                    Please wait while we send the verification code to your email address....
+                </small>
+            </div>
+        </div>
+        <div class="resettingPassword matchParent flexBoxHorizontal gravity"> 
+            <div class="card flexBoxHorizontal gravity">
+                <small class="card-text" style="text-align: center">
+                    Please wait while we are changing your password...
+                </small>
+            </div>
+        </div>
+        <main class = "flexBoxHorizontal matchParentWidthOnly gravity">
+            <div class="backgroundCard flexBoxVertical gravity roundedEdgesLight borderVisibleLight"> 
+                @RenderBody() 
+            </div>
+        </main>
+        <br />
+        <br /> 
+        <br />
+        <br /> 
+        <!--section tag contains a help button in which the user can click on-->
+        <section class="matchParentWidthOnly flexBoxHorizontal"> 
+            <!--No element shall be contained within this <div> tag-->
+            <div class = "whitespace matchParentHeightOnly" style="width: 75%;"></div>
+            <div class = "flexBoxHorizontal spaceOut_row matchParentHeightOnly" style="width: 24.9999%">
+                <div class = "circle baseCircle" href="#">
+                    <!--Redirect to the help page
+                        I WILL COMPLETE THIS IF I HAD THE TIME TO DO SO
+                    -->
+                    <span class="material-icons" style="font-size: 75px">help</span>
+                </div>
+                <div class = "circle baseCircle" href="#">
+                    <!--Redirect to the settings page
+                        I WILL COMPLETE THIS IF I HAD THE TIME TO DO SO
+                    -->
+                    <span class="material-icons" style="font-size: 75px">settings</span>
+                </div>
+            </div>
+        </section>
+        <footer class = "matchParentWidthOnly flexBoxHorizontal gravity"> 
+            &copy; 2022 All Rights Reserved 
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/CustomerLoginCommon.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>

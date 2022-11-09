@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "VerificationCodeRetrievalPortal";
+    Layout = null; 
+    string result = TempData["Fail"] as string; 
+}
+
+@model Customer
+
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - web_asignment1_Y2S1_2022</title>
+        <link rel="stylesheet" href="~/css/constant.css" type="text/css"/>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" type="text/css"/>
+        <!-- Import the required google font API -->
+        <link href = "https://fonts.googleapis.com/css?family=Varela+Round" rel = "stylesheet" type = "text/css"/>
+        <!--Import the required google icons API-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css"/>
+    </head>
+    <body> 
+        <h3>Verification Code Retrieval Portal</h3>
+        <small>This is not a portal to sign into the ZZFashion shopping website, please click <a href="~/Home/Index">Here</a></small>
+        <br /><br />
+        <form asp-controller="LoginCustomer" asp-action="SignIntoVerificationCodeRetrievalPortal" method="post"> 
+            <!--For the email address-->
+            <div class="form-group row"> 
+                <label class="col-md-5 roundedEdgesLight">Email Address: </label> 
+                <input type="email" name="EmailAddr" placeholder="Please enter the email address of your account" class="col-md-5 form-control" />
+            </div> 
+            <br /> 
+            <!--For extra security enter the -->
+            <div class="form-group row"> 
+                <label class="col-md-5 roundedEdgesLight">MemberID: </label> 
+                <input type="text" name="MemberID" placeholder="Please enter the memberID of your account" class="col-md-5 form-control" />
+            </div>
+            <br /> 
+            <!--For the temporary access code-->
+            <div class="form-group row"> 
+                 <label class="col-md-5 roundedEdgesLight">Temporary Access Code: </label> 
+                 <input type="text" name="TempAccessCode" placeholder="Please enter the temporary access code" class="col-md-5 form-control" />
+            </div> 
+            <br /> 
+            <button type="submit" class="btn btn-primary">Sign in!</button>
+        </form>
+        <br /> 
+        @{
+            if (result != null)
+            {
+                <div class="matchParentWidthOnly flexBoxHorizontal gravity roundedEdgesLight" style="background-color: red; color: white"> 
+                    <small><small>@result</small></small> 
+                </div> 
+            }
+            else
+            {
+                <br />
+            }
+        }
+        <br /> 
+        <footer class="matchParentWidth flexBoxHorizontal gravity">
+           &copy;ZZFashion Information Systems. 2022 All Rights Reserved
+        </footer>
+    </body>
+</html>

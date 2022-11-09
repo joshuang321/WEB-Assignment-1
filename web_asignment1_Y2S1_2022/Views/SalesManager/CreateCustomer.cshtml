@@ -1,0 +1,105 @@
+﻿<!-- View by Tan Kwan Wei-->
+@model web_asignment1_Y2S1_2022.Models.Customer
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4 class="PageTitle">Add New Customer</h4>
+<hr />
+<form asp-action="Create">
+    <fieldset class="FormContent">
+        <div class="form-group row">
+            <label asp-for="MName"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="MName" class="form-control" />
+                <span asp-validation-for="MName"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="MGender"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <div class="form-group form-check-inline">
+                    <label class="col-form-label">
+                        <input asp-for="MGender" type="radio" value="M"
+                               checked class="form-check-input" />
+                        <span style="font-weight:normal;
+ padding-right:20px">Male</span>
+                    </label>
+                    <label class="col-form-label">
+                        <input asp-for="MGender" type="radio" value="F"
+                               class="form-check-input" />
+                        <span style="font-weight:normal;
+ padding-right:20px">Female</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="MBirthDate"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="MBirthDate" class="form-control" />
+                <span asp-validation-for="MBirthDate"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="MCountry"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="MCountry" class="form-control" />
+                <span asp-validation-for="MCountry"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="MEmailAddr"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="MEmailAddr" class="form-control" />
+                <span asp-validation-for="MEmailAddr"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="MAddress"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="MAddress" class="form-control" />
+                <span asp-validation-for="MAddress"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="MTelNo"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="MTelNo" class="form-control" />
+                <span asp-validation-for="MTelNo"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Password"
+                   class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 col-md-5">
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3">
+                <input type="submit" value="Create"
+                       class="btn btn-primary" />
+            </div>
+        </div>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </fieldset>
+</form>

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<web_asignment1_Y2S1_2022.Models.Product>
+
+@{
+	ViewData["Title"] = "Product Manager";
+}
+<partial name="~/Views/ProductManager/_ProductManagerMenu.cshtml" />
+@if (Model.ToList().Count > 0)
+{
+	<div class="table-responsive">
+		<table id="viewStaff" class="table table-striped table-bordered">
+			<thead class="thead-dark">
+				<tr>
+					<th>Product Id</th>
+					<th>Product Title</th>
+					<th>Product Image</th>
+					<th>Price (SGD before GST)</th>
+					<th>Effective Date</th>
+					<th>Obsolete</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>@item.ProductId.ToString()<br /><br /><a asp-action="UpdateProduct" asp-controller="ProductManager"
+					   asp-route-productId="@item.ProductId">Update Product</a></td>
+						<td>@item.ProductName</td>
+						<td>
+							<img src="~/images/@item.ProductImage"
+						 style="width:50px" />
+						</td>
+						<td>@Html.FormatValue(item.Price, "{0:#,##0.00}")</td>
+						<td>@Html.FormatValue(item.EffectiveDate, "{0:dd/MM/yyyy}")</td>
+						<td>
+							@{
+								string text;
+								text = @item.isObsolete ? "Yes" : "No";
+							}
+							@text
+						</td>
+					</tr>
+			}
+			</tbody>
+		</table>
+	</div>
+}
+else
+{
+	<span style="color:red">No Products found!</span>
+}

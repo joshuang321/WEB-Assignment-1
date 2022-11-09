@@ -1,0 +1,214 @@
+﻿@{
+    ViewData["Title"] = "Profile";
+    Layout = "_CustomerProfile"; 
+    var data = ViewBag.Message;
+    string errorMessage = "Data not available"; 
+    string hashPassword = string.Empty; 
+    var visibilityState = ViewBag.VisibilityState;  
+}
+
+<!--What's left: 
+    1) Need to complete ASP-VALIDATION 
+-->
+
+@using System;
+
+<!--Define the main frame of the customer profile box-->
+<div class="base matchParentWidthOnly flexBoxVertical gravity">
+    <h1>Profile</h1>
+    <div class="flexBoxHorizontal matchParentWidthOnly gravity borderVisibleLight">
+        <form asp-controller="Customer" asp-action="ChangePersonalParticulars"> 
+            <div class="form-group row"> 
+                <label class="col-md-5 roundedEdgesLight"> 
+                    Name: 
+                </label>
+                <!--Insert username here-->
+                <input id="Username" class="col-md-5 form-control" readonly placeholder="@{
+                    if (data is Customer)
+                    {
+                        @data.MName
+                    }
+                    else if (data is Staff)
+                    {
+                        @data.SName
+                    }
+                }"/> 
+            </div>
+            <br /> 
+            <div class="form-group row"> 
+                <label class="col-md-5 roundedEdgesLight"> 
+                    Gender: 
+                </label>
+                <input id="UserGender" class="col-md-5 form-control" readonly placeholder="@{
+                    if (data is Customer){
+                        @data.MGender
+                    }
+                    else if (data is Staff)
+                    {
+                        @data.SGender
+                    }
+                }"/>
+            </div>
+            <br /> 
+            <div class="form-group row"> 
+                <label class="col-md-5 roundedEdgesLight"> 
+                    Date Of Birth: 
+                </label>
+                <input id="UserDOB" class="col-md-5 form-control" readonly placeholder="@{
+                    if (data is Customer){
+                        @data.MBirthDate.ToShortDateString()
+                    }
+                    else if (data is Staff)
+                    {
+                        @errorMessage
+                    }
+                }"/>
+            </div>
+            <br /> 
+            <div class="form-group row"> 
+                <label class="col-md-5 roundedEdgesLight"> 
+                    Email Address: 
+                </label>
+                <input id="UserEmailAddr" class="col-md-5 form-control" readonly placeholder="@{
+                    if (data is Customer)
+                    {
+                        if (data.MEmailAddr.Length > 0)
+                        {
+                            @data.MEmailAddr
+                        }
+                        else 
+                        {
+                            @errorMessage
+                        }
+                    }
+                    else if (data is Staff)
+                    {
+                        @data.SEmailAddr
+                    }
+                }" /> 
+            </div>
+            <br />
+            <!--Insert the user's password over here....-->
+            <div class="form-group row"> 
+                <label class="col-md-5 roundedEdgesLight"> 
+                    Password:
+                </label>
+                <!--Try to wrap this input tag around a wrapper <div> element-->
+                <div class="col-md-5 flexBoxHorizontal" style="padding: 0; margin: 0">
+                    <input id="UserEmailAddr" class="form-control" readonly placeholder="@{
+                        if (data is Customer)
+                        {
+                            if (data.Password.Length > 0)
+                            {
+                                for (int i = 0; i < data.Password.Length; i++)
+                                {
+                                    hashPassword += "*"; 
+                                }
+                                //Replace entire password string with '*' according to the password string's length
+                                @data.Password.Replace(data.Password, hashPassword); 
+                            }
+                        }
+                        else if (data is Staff)
+                        {
+                            if (data.SPassword.Length > 0)
+                            {
+                                for (int i = 0; i < data.SPassword.Length; i++)
+                                {
+                                    hashPassword += "*"; 
+                                }
+                                @data.SPassword.Replace(data.SPassword, hashPassword); 
+                            }
+                        }
+                    }" /> 
+                    <button id="tog" type="button" style="background-color: black" class="flexBoxHorizontal gravity matchParentHeightOnly roundedEdgesLight"> 
+                        <span id="material" class="material-icons" style="color: white">visibility_off</span>
+                    </button>
+                </div> 
+            </div>
+            <br /> 
+            <div class="form-group row"> 
+                <label class="col-md-5 roundedEdgesLight"> 
+                    Residential Address: 
+                </label>
+                <input id="UserResidentialAddr" class="col-md-5 form-control" readonly placeholder="@{
+                    if (data is Customer)
+                    {
+                        if (data.MAddress.Length > 0)
+                        {
+                            @data.MAddress
+                        }
+                        else
+                        {
+                            @errorMessage
+                        }
+                    }
+                    else if(data is Staff)
+                    {
+                        @errorMessage
+                    }
+                }"/> 
+            </div> 
+            <br /> 
+            <div class="form-group row"> 
+                <label class="col-md-5 roundedEdgesLight"> 
+                    Country: 
+                </label>
+                <input id="UserCountry" class="col-md-5 form-control" readonly placeholder="@{
+                    if (data is Customer)
+                    {
+                        @data.MCountry
+                    }
+                    else if (data is Staff)
+                    {
+                        @errorMessage
+                    }
+                }"/> 
+            </div> 
+            <br /> 
+            <div class="form-group row"> 
+                <label class="col-md-5 roundedEdgesLight"> 
+                    Telephone Number: 
+                </label>
+                <input id="UserTelNo" class="col-md-5 form-control" readonly placeholder="@{
+                    if (data is Customer)
+                    {
+                        if (data.MTelNo.Length > 0)
+                        {
+                            @data.MTelNo
+                        }
+                        else
+                        {
+                            @errorMessage
+                        }
+                    }
+                    else if (data is Staff)
+                    {
+                        @data.STelNo
+                    }
+                }"/> 
+            </div> 
+            <!--Introduce a set of buttons in which the user can use to update his or her profile-->
+            <button type="submit" class="btn btn-primary flexBoxHorizontal gravity">
+                Change Personal Particulars
+            </button>
+            <br /> 
+            <button asp-controller="Customer" asp-action="ChangePassword" class="btn btn-primary">Change password</button>
+        </form>
+    </div> 
+    <!--Add a script tag so that we can perform some simple javascript over here-->
+    <script type="text/javascript" language="javascript"> 
+        document.getElementById("tog").addEventListener("click", () => {
+            if (document.getElementById("material").innerHTML === "visibility_off"){
+                document.getElementById("material").innerHTML = "visibility"; 
+                var data = @data.Password
+                //Replace the placeholder of the password with the actual password
+                document.getElementById("UserEmailAddr").setAttribute("placeholder", "HELLO"); 
+            }
+            else {
+                document.getElementById("material").innerHTML = "visibility_off"; 
+                //Replace the placeholder with string of asterisks depending on the length of the placeholder string
+
+            }
+        }); 
+    </script>
+</div> 

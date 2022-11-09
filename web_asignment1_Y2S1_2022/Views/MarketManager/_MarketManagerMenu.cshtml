@@ -1,0 +1,30 @@
+﻿@{string activation;}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a class="navbar-brand" href="#">Market</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item@{
+		activation = ("ViewFeedback" == ViewData["Page"] as string) ? " active" : "";
+										@activation
+}">
+                <a class="nav-link" href="~/MarketManager/Index">View Feedbacks</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item@{
+		activation = ("ViewResponse" == ViewData["Page"] as string) ? " active" : "";
+										@activation
+}">
+                <a class="nav-link" href="~/MarketManager/ViewResponse">View Response</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item@{
+		activation = ("ViewTransaction" == ViewData["Page"] as string) ? " active" : "";
+										@activation
+}">
+                <a class="nav-link" href="~/MarketManager/ViewTransaction">View Transaction</a>
+            </li>
+        </ul>
+    </div>
+</nav>

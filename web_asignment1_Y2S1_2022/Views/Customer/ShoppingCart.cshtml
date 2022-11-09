@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Http; 
+
+@{
+    ViewData["Title"] = "ShoppingCart";
+    Layout = "_Layout"; 
+    var data = ViewBag.ShoppingCart; 
+    var d = Context.Session.GetString("needsDiscount");
+    var centralise = "gravity"; 
+}
+
+@model web_asignment1_Y2S1_2022.Models.ShoppingCart
+
+<!--
+    Done by: Li Zhe Yun
+    Form logic handled by CustomerController.cs
+    Form data posted to database through: CustomerController.cs
+
+    To debug this webpage, please ensure that the URL in your searchbar IS
+    https://localhost:44330/Customer/ShoppingCart 
+-->
+
+<div class="matchParentWidthOnly"> 
+    <h1><b> Shopping Cart </b></h1>
+    <div class="flexBoxHorizontal matchParentWidthOnly" @{ if(data == null){ @centralise }} > 
+        @{
+            if (data != null)
+            {
+                foreach(Product p in data)
+                {
+                    <div class="itemConfig flexBoxHorizontal matchParentWidthOnly"> 
+            
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="flexBoxVertical matchParentWidthOnly gravity"> 
+                    <span>You do not have any items in your shopping cart right now</span>
+                    <br /><br />
+                    <button asp-controller="Customer" asp-action="RedirectToProductsPage" class="btn btn-primary">Go and browse our products!</button>
+                </div> 
+            }
+        }
+    </div>
+    <hr /> 
+    <div class="flexBoxHorizontal matchParentWidthOnly gravity"> 
+        <div class="whitespace matchParentHeightOnly" style="flex: 1"></div>
+        <div class="flexBoxHorizontal gravity" style="flex: 0.5">
+            <div class="flexBoxHorizontal matchParentHeightOnly" style="flex:0.75">
+                <h1> Total: </h1>
+            </div> 
+            <div class="flexBoxHorizontal matchParentHeightOnly" style="flex: 1.5"> 
+                @{
+                    if(d != null)
+                    {
+                        <s style="color: lightgray">
+                            <small>$</small>
+                        </s>
+                    }
+                }
+                <h5>$</h5>
+                <small>0.00</small>
+            </div>
+        </div>
+    </div>
+</div>

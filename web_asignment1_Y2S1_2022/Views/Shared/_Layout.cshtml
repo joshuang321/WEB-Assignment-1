@@ -1,0 +1,658 @@
+﻿<!--
+    THIS IS A SHARED LAYOUT THAT WILL BE USED BY ALMOST ALL OF THE CSHTML FILES THAT WE WILL BE CREATING
+    
+    Created by: Li Zhe Yun 
+    On: 29th June 2022 
+    For: WEB Assignment 1 AY 2022
+-->
+@using Microsoft.AspNetCore.Http
+@using System
+
+@{
+    Layout = null; 
+    string disabled = "disabled"; 
+    string role = Context.Session.GetString("Role"); 
+    string username = Context.Session.GetString("Name"); 
+    var data = Context.Session.GetString("Error"); 
+    //The birthday thingy is strictly done for Customers
+    string isOpened = Context.Session.GetString("isOpened");
+    string gate = Context.Session.GetString("doNotShowAgain");
+    var confirmation = TempData["Update successful"];
+    string spi = Context.Session.GetString("SelectedProductImage");
+    string spn = Context.Session.GetString("SelectedProductName"); 
+    string spp = Context.Session.GetString("SelectedProductPrice"); 
+    string not_allowed = "not-allowed"; 
+    Product product = null; 
+    if ((spi != null && spn != null) && spp != null)
+    {
+        product = new Product
+        {
+            ProductImage = spi, 
+            ProductName = spn, 
+            Price = Convert.ToDecimal(spp) 
+        }; 
+    }
+    string feedbackTitle = Context.Session.GetString("FeedbackTitle");  //title of the feedbakc 
+    string feedbackContents = Context.Session.GetString("FeedbackText");  //contents of the feedback 
+    string feedbackImageString = Context.Session.GetString("FeedbackImage");  //image path that will be needed by the code to retrieve the images again from the folder
+    Feedback feedback = null; 
+    if ((feedbackTitle != null && feedbackContents != null))
+    {
+        feedback = new Feedback
+        {
+            Title = feedbackTitle, 
+            Text = feedbackContents,
+            ImageFileName = feedbackImageString == null ? feedbackImageString : "download.png" //Check if the customer has uploaded an image upon submission of the feedback, if not just use the 
+        }; 
+    }
+    string result1 = Context.Session.GetString("Test");
+    string memberids = Context.Session.GetString("MemberIDS");  //Backtick delimited member names stored as a string 
+    string staffids = Context.Session.GetString("StaffIDS");    //Backtick delimited staff names stored as a string 
+    string responseDates = Context.Session.GetString("ResponseDates");  //Backtick delimited date time posted stored as a string
+    //Test the API over here 
+    string current = Context.Session.GetString("This"); 
+
+    string successful = Context.Session.GetString("Successful"); 
+    //Another error message
+    string changePasswordFail = Context.Session.GetString("ResetError"); 
+
+    //Backtick delimited string that is used to pass over the error messages to the view
+    //STORES ERROR MESSAGES THAT HAVE BEEN GENERATED FROM THE CreateFeedback.cshtml
+    string backtickDelimitedError = Context.Session.GetString("ErrorMessagesDelimitedString"); 
+    string feedbackPostingSuccessful = Context.Session.GetString("FeedbackPostingSuccessful"); 
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - web_asignment1_Y2S1_2022</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" type="text/css"/>
+        <link rel="stylesheet" href="~/css/constant.css" type="text/css"/>
+        <link rel="stylesheet" href="~/css/site.css" type="text/css"/>
+        <link href="~/css/normalise.css" rel="stylesheet" type="text/css" />
+        <link href="~/css/Customer.css" rel="stylesheet" type="text/css" /> 
+        <!-- Import the required google font API -->
+        <link href = "https://fonts.googleapis.com/css?family=Varela+Round" rel = "stylesheet" type = "text/css"/>
+        <!--Import the required google icons API-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css"/>
+    </head>
+    <body>
+        <!--Overlay messagee to display all the error messages when the creation of the feedback was not successful-->
+        @{
+            if (role != null && (backtickDelimitedError != null || feedbackPostingSuccessful != null))
+            {
+                <div class="birthdayBase matchParent"> 
+                    <div class="film matchParent flexBoxHorizontal gravity">
+                        <form class="card flexBoxVertical gravity roundedEdgesLight" style="width: 75%; height: 75%">
+                            @{
+                                if (backtickDelimitedError != null)
+                                {
+                                    <span class="material-icons">cancel</span>
+                                    foreach (string s in backtickDelimitedError.Split("`"))
+                                    {
+                                        <small class="text-danger">@s</small>
+                                        if (!Array.IndexOf(backtickDelimitedError.Split("`"), s).Equals(backtickDelimitedError.Split("`").Length - 1))
+                                        {
+                                            <br />
+                                        }
+                                    }
+                                    <br />
+                                    <h5> Why do we need this information(s) </h5>
+                                    <!--Store the error descriptions--> 
+                                    <ol class="doubleLine"> 
+                                        @{
+                                            if (backtickDelimitedError.Split("`").Contains("You have not inserted any text into the feedback textbox"))
+                                            {
+                                                <li><small>This field is compulsory. You need to input a text so that we will know how you want ZZFashion to improve</small></li>
+                                            }
+                                            if (backtickDelimitedError.Split("`").Contains("You have not inserted any images into your feedback"))
+                                            {
+                                                <li><small>You need to insert a image so that we can get a better picture of what were some of the problems that you were facing</small></li>
+                                            }
+                                            if (backtickDelimitedError.Split("`").Contains("You have not inserted any text into the subject portion"))
+                                            {
+                                                <li><small>This field is compulsory. All feedback must have a subject</small></li>
+                                            }
+                                        }
+                                    </ol>
+                                    <button asp-controller="Customer" asp-action="ResetErrorInformation" type="submit" class="btn btn-primary borderVisibleLight" style="border-color: red; background-color: white; color: red">Close</button>
+                                }
+                                if (feedbackPostingSuccessful != null)
+                                {
+                                    <span class="material-icons">done</span>
+                                    <br /><br /> 
+                                    <small>Your feedback has been successfully posted to the website. Please allow up to 3 - 5 working days for your </small>
+                                    <br /><br />
+                                    <button asp-controller="Customer" asp-action="ClearMessage" type="submit" class="btn btn-primary"></button>
+                                }
+                            }
+                        </form> 
+                    </div> 
+                </div>
+            } 
+        }
+        <!--Overlay message to display the message for the selected feedback-->
+        @{
+            if (role != null && feedback != null)
+            { 
+                <div class="birthdayBase matchParent"> 
+                    <div class="film matchParent flexBoxHorizontal gravity"> 
+                        <!--This will be the form where we will be displaying the contents of the feedback that the current has made--> 
+                        <form class="card flexBoxVertical gravity roundedEdgesLight" style="width: 75%; height: 75%">
+                            <!--Insert the image horizontally--> 
+                            <div class="flexBoxHorizontal matchParent"> 
+                                <div class="flexBoxHorizontal gravity matchParentHeightOnly" style="flex: 1">
+                                    <img src="~/Images/@feedback.ImageFileName" alt="No image available" class="img-fluid rounded-start" /> 
+                                </div> 
+                                <div class="flexBoxHorizontal gravity matchParentHeightOnly" style="flex: 2.5"> 
+                                    <div class="card-body"> 
+                                        <h4 class="card-title">@feedback.Title</h4>
+                                        <div class="matchParentWidthOnly borderVisibleLight" style="height: 50px; overflow-y: scroll">
+                                            <p class="card-text">@feedback.Text</p>
+                                        </div> 
+                                        <br />
+                                        <!--The below <div> container is used for containing all the feedback and the responses that has been made by the user-->
+                                        <h4>Chat log</h4>
+                                        <div class="matchParentWidthOnly borderVisibleLight" style="height: 200px; overflow-y: scroll">
+                                            @{
+                                                if (result1.Length > 0)
+                                                {
+                                                    for(int i = 0; i < result1.Split('`').Length; i++)
+                                                    {
+                                                        if ( result1.Split('`')[i] != null)
+                                                        {
+                                                            string getItem = memberids.Split('`')[i] == string.Empty ? staffids.Split('`')[i] == string.Empty ? "" : staffids.Split('`')[i] : memberids.Split('`')[i]; 
+                                                            DateTime getIndividualDates = responseDates.Split('`')[i].Length == 0 ? new DateTime() : Convert.ToDateTime(responseDates.Split('`')[i]); 
+                                                            string color = "lightgreen"; 
+                                                            <div class="flexBoxVertical matchParentWidthOnly borderVisibleLight roundedEdgesLight" 
+                                                            style="background-color: @{
+                                                                if (getItem.Equals(username))
+                                                                {
+                                                                    @color
+                                                                } 
+                                                            }">
+                                                                <span>@result1.Split('`')[i]</span>
+                                                                <br />
+                                                                <div class="align-left-row flexBoxHorizontal matchParentWidthOnly">
+                                                                    <div class="spaceOut_row flexBoxHorizontal matchParentHeightOnly" style="width: 65%">
+                                                                        <small>By: @getItem</small>
+                                                                        <small>Sent on: @getIndividualDates.ToShortDateString()</small>
+                                                                    </div> 
+                                                                </div> 
+                                                            </div> 
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-danger"> This feedback has not been a given a response as of now. Please refresh the page and check again. </span>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-danger"> This feedback has not been a given a response as of now. Please refresh the page and check again. </span>
+                                                    <br />
+                                                    <small>ERR: RESPONSE_NULL </small>
+                                                    <br />
+                                                    @Context.Session.GetString("sdf"); 
+                                                }
+                                            }
+                                        </div> 
+                                        <br /> 
+                                        <button asp-controller="Customer" asp-action="CloseFeedback" class="btn btn-primary borderVisibleLight" style="border-color: red; background-color: white; color: red;">Close</button>
+                                    </div> 
+                                </div> 
+                            </div> 
+                        </form> 
+                    </div> 
+                </div> 
+            } 
+        }
+        <!--Create an overlay message that will be seen by the user after the user has clicked on the button that would open an overlay element which displays product details-->
+        @{
+            if (product != null && role != null)
+            {
+                <div class="productInfo matchParent"> 
+                    <div class="film matchParent flexBoxHorizontal gravity"> 
+                        <form class="card flexBoxVertical gravity roundedEdgesLight" style="width: 45%; height: 45%">
+                            <!--Insert the image horizontally--> 
+                            <div class="flexBoxHorizontal matchParent"> 
+                                <div class="flexBoxHorizontal gravity matchParentHeightOnly" style="flex: 1">
+                                    <img src="~/Images/@product.ProductImage" alt="This image cannot be displayed now" class="img-fluid rounded-start" /> 
+                                </div> 
+                                <div class="flexBoxHorizontal gravity matchParentHeightOnly" style="flex: 2.5"> 
+                                    <div class="card-body"> 
+                                        <h4 class="card-title">@product.ProductName</h4>
+                                        @{
+                                            if (isOpened != null)
+                                            {
+                                                //If it is the user's birthday, then deduct the price IDK
+                                                <!--Original price--> 
+                                                <s class="card-text" style="color: lightgray">@string.Format("{0:C2}", product.Price)</s>
+                                                <br />
+                                                <!--Discounted price--> 
+                                                <h4 class="card-text">
+                                                    @{
+                                                        try
+                                                        {
+                                                            Convert.ToDecimal(product.Price); 
+                                                            decimal result = product.Price * Convert.ToDecimal(0.85); 
+                                                            <br />
+                                                            <small>Now the current price is: </small>
+                                                            <span>@string.Format("{0:C2}", result)</span>
+                                                        }
+                                                        catch (Exception e)
+                                                        {
+                                                            <span>@e.StackTrace</span>
+                                                            <br /><br />
+                                                            <span> Error: The price was not represented in the correct format </span>
+                                                        }
+                                                    }
+                                                </h4>
+                                            }
+                                            else
+                                            {
+                                                <!--Just display the price--> 
+                                                <small> Current price for this product is </small>
+                                                <h4 class="card-text">@string.Format("{0:C2}", product.Price)</h4> 
+                                            }
+                                        }
+                                        <!--Add a button to post the results-->
+                                        <button id="add" title="Add item to cart" class="btn btn-primary">Add to cart</button>
+                                        <button asp-controller="Customer" asp-action="ClearSelection" id="close" title="Close window" class="btn btn-primary borderVisibleLight" style="border-color: red; color: red; background-color: white">Close</button> 
+                                    </div>
+                                </div>
+                            </div>
+                        </form> 
+                    </div> 
+                </div>
+            }
+        }
+        <!--Display happy birthday message to the customer-->
+        @{
+            if (isOpened != null)
+            {
+                //Ensure that the following pop-up message only appears once for the user to see, if not this message will just keep appearing the moment the user goes to another webpage
+                if (gate == null)
+                {
+                    //Once this thing shows up
+                    <div class="birthdayBase matchParent" > 
+                        <div class="film matchParent flexBoxHorizontal gravity"> 
+                            <form class="card flexBoxVertical gravity roundedEdgesLight" > 
+                                <span class="material-icons" style="font-size: 30px; position: relative">cake</span>
+                                Today is a really special day for you!!!!
+                                <br /><br />
+                                <span>Today's date is @DateTime.Now.ToShortDateString()</span> 
+                                <br /><br />
+                                You will be enjoy discounts of up to 15% on all the items that you have bought from ZZFashion's official website
+                                <small>Press any key on your keyboard to close this pop-up message</small>
+                                <br /><br /> 
+                                <div class="flexBoxHorizontal gravity matchParentWidthOnly">
+                                    <small><small>Do not show this again</small></small>
+                                    <div class="whitespace" style="width: 20px;"></div>
+                                    <input id="box" type="checkbox" checked/> 
+                                </div> 
+                                <!--Somehow have to put an event listener over here... 
+                                    Make the server remember that the user would want the message to be displayed only once
+                                -->
+                                <script type="text/javascript" language="javascript"> 
+                                    function DoNotShowAgain(){
+                                        document.getElementsByTagName("body")[0].addEventListener("keydown", (e) => {
+                                            document.getElementsByClassName("birthdayBase")[0].style.display = "none"; 
+                                            //Not sure if its possible to perform an XMLHttpRequest over here since the event listener only controls the front-end but not the back-end
+                                            if (document.getElementById("box").checked){
+                                                var url = window.location.href; 
+                                                if (url.toString().includes("https://localhost:")){
+                                                    //determine the port number of the user
+                                                    var port = url.split(':')[2].split('/')[0]; 
+                                                    const httpReq = new XMLHttpRequest(); 
+                                                    httpReq.open("POST", `https://localhost:${port}/Customer/Test`, true); 
+                                                    httpReq.setRequestHeader("Content-type", "application/json");
+                                                    httpReq.onreadystatechange = () => {
+                                                        console.log(httpReq.readyState);
+                                                        console.log(httpReq.status); 
+                                                    }
+                                                    httpReq.send(""); 
+                                                }
+                                            }
+                                        }); 
+                                    } 
+                                    DoNotShowAgain(); 
+                                </script> 
+                            </form>
+                        </div> 
+                    </div>
+                } 
+            } 
+        }
+        <!--LOADING SCREEN WHICH TELLS THE USER THAT THE SYSTEM IS CURRENTLY UPDATING THE PASSWORD--> 
+        @{
+
+        }
+        <!--SUCCESSFUL MESSAGE COMPONENT WHEN THE USER TRIES TO CHANGE HIS OR HER PASSWORD--> 
+        @{
+            if (successful != null || changePasswordFail != null)
+            {
+                <div id="changingPassword" class="birthdayBase matchParent" > 
+                    <div class="film matchParent flexBoxHorizontal gravity"> 
+                        <form asp-controller="LoginCustomer" asp-action="Acknowledgement" class="card flexBoxVertical gravity roundedEdgesLight" style="width: 65%; height: 65%">
+                            @{
+                                if (successful != null)
+                                {
+                                    <!--Only display this message when the user has successfully updated his or her account password-->
+                                    <div class="circle flexBoxHorizontal gravity" style="background-color: green; color: white; width: 30px; height: 30px">
+                                        <span class="material-icons">done</span>
+                                    </div> 
+                                    <small>Your password has been updated successfully. You can now sign into this account with the new password that you have set</small> 
+                                    <br /><br /> 
+                                    <small><small>Click on the button below to close this pop-up message</small></small> 
+                                    <button type="submit" class="btn btn-primary borderVisibleLight" style="border-color: red; background-color: white; color: red">Close</button>
+                                }
+                                else if(changePasswordFail != null)
+                                {
+                                    <!--Only display this message when the user did not update his or her account password successfully-->
+                                    <div class="circle flexBoxHorizontal gravity" style="background-color: red; color: white; width: 30px; height: 30px">
+                                        <span class="material-icons">close</span>
+                                    </div> 
+                                    <br /><br /> 
+                                    <small>Failed to update your password due to an error</small> 
+                                    <br /><br /> 
+                                    <p class="text-danger">@changePasswordFail</p>
+                                    <br /><br />
+                                    <small><small>Click on the button below to close this pop-up message</small></small> 
+                                    <button type="submit" class="btn btn-primary borderVisibleLight" style="border-color: red; background-color: white; color: red">Close</button>
+                                }
+                            }
+                        </form> 
+                    </div> 
+                </div> 
+            } 
+        }
+        <!--ERROR MESSAGE COMPONENT FOR CHANGING OF PROFILES-->
+        @{
+            if (data != null || confirmation != null)
+            {
+                <div class="noBlankFields matchParent"> 
+                    <div class="film matchParent flexBoxHorizontal gravity"> 
+                        <!--This error will only be displayed when the user want s to -->
+                        <form asp-controller="Customer" asp-action="SetNewPersonalParticularsAnyway" class="card flexBoxHorizontal gravity roundedEdgesLight"> 
+                            <div class="iconBox flexBoxHorizontal gravity matchParentHeightOnly">
+                                @{
+                                    if (data != null)
+                                    {
+                                        <div class="circle flexBoxHorizontal gravity" style="background-color: red; color: white; width: 30px; height: 30px">
+                                            <span class="material-icons">close</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="circle flexBoxHorizontal gravity" style="background-color: green; color: white; width: 30px; height: 30px">
+                                            <span class="material-icons">done</span>
+                                        </div> 
+                                    }
+                                }
+                            </div>
+                            <br />
+                            <div class="errorDesc flexBoxHorizontal gravity matchParentHeightOnly"> 
+                                <div class="flexBoxVertical gravity"> 
+                                    @{
+                                        if (data != null) //Remember data is an array of error messages
+                                        {
+                                            //Remember that @data is a string 
+                                            //We will need to convert it back to a list that we can iterate through
+                                            foreach (string s in data.Split(',')){
+                                                <div style="color: red" class="flexBoxHorizontal matchParentWidthOnly gravity"> 
+                                                    <small>@s</small> 
+                                                    @{
+                                                        
+                                                    } 
+                                                </div> 
+                                            } 
+                                            <br /><br />
+                                            if ((data.Split(',').Contains("Email Address field has been left blank!") || data.Split(',').Contains("Residential address field has been left blank!")) || data.Split(',').Contains("Telephone number field has been left blank!"))
+                                            {
+                                                <h5>Why should you give us your email address, residential address and your telephone number?</h5>
+                                                <ol class="doubleLine"> 
+                                                    <li>We need your email address so that we can contact you in the event of an emergency</li>
+                                                    <li>We need your residential address so that we know where to deliver your package</li>
+                                                    <li>We need your telephone number so that we can still contact you if you are unreachable via email</li>
+                                                    <li>More importantly, you will need your email address to reset your password!</li>
+                                                </ol>
+                                                <br />
+                                            } 
+                                            else if ((data.Split(',').Contains("A duplicate telephone number was found") || data.Split(',').Contains("A duplicate residential address was found")) || data.Split(',').Contains("A duplicate email address was found"))
+                                            {
+                                                <span>We do not allow duplicate records within the database.</span>
+                                                <br />
+                                            }
+                                            <!--Just use javascript to close LOL-->
+                                            <small>Press any key on your keyboard to close this pop-up message and to modify your personal particulars</small>
+                                            <!--Somehow have to put an event listener over here-->
+                                            <script type="text/javascript" language="javascript"> 
+                                                document.getElementsByTagName("body")[0].addEventListener("keydown", (e) => {
+                                                    document.getElementsByClassName("noBlankFields")[0].style.display = "none";
+                                                }); 
+                                            </script> 
+                                            <br />
+                                            <p style="text-align: center">or press the button below to confirm your responses</p>
+                                            <br />
+                                            <div class="flexBoxHorizontal gravity">
+                                                <!--If the array contains a specific string then disable the button--> 
+                                                <!--If the button is not disabled then post whatever information to the database--> 
+                                                <button class="btn btn-primary" type="submit" 
+                                                style="cursor: @{
+                                                    if ((data.Split(',').Contains("A duplicate telephone number was found") || data.Split(',').Contains("A duplicate residential address was found")) || data.Split(',').Contains("A duplicate email address was found"))
+                                                    {
+                                                        @not_allowed
+                                                    }
+                                                }"
+                                                @{
+                                                    if ((data.Split(',').Contains("A duplicate telephone number was found") || data.Split(',').Contains("A duplicate residential address was found")) || data.Split(',').Contains("A duplicate email address was found"))
+                                                    {
+                                                        @disabled
+                                                    }
+                                                } >Save my particulars</button> 
+                                            </div> 
+                                        }  
+                                        else 
+                                        {
+                                            @confirmation 
+                                            <br /> <br />
+                                            <small>Press any key on your keyboard to close this pop-up window. Thank you!</small>
+                                        }
+                                    }
+                                </div> 
+                            </div>
+                        </form>
+                    </div>
+                    <!--Somehow have to put an event listener over here-->
+                    <script type="text/javascript" language="javascript"> 
+                        document.getElementsByTagName("body")[0].addEventListener("keydown", (e) => {
+                            document.getElementsByClassName("noBlankFields")[0].style.display = "none";
+                            var url = window.location.href; 
+                            if (url.toString().includes("https://localhost:")){
+                                //determine the port number of the user
+                                var port = url.split(':')[2].split('/')[0]; 
+                                const httpReq = new XMLHttpRequest(); 
+                                httpReq.open("POST", `https://localhost:${port}/Customer/RemoveItem`, true); 
+                                httpReq.setRequestHeader("Content-type", "application/json");
+                                httpReq.onreadystatechange = () => {
+                                    console.log(httpReq.readyState);
+                                    console.log(httpReq.status); 
+                                }
+                                httpReq.send(""); 
+                            }
+                        }); 
+                    </script> 
+                </div> 
+            } 
+            //Don't display this textbox otherwise if var data is absolutely null 
+        }
+        <!--========================================================================================================================-->
+        <!--Overlay menu that will show up upon opening of the-->
+        <!--Header-->
+        <div id="tempNavBar" class="matchParentWidthOnly"> 
+            <!--Main container to house the--> 
+            <div id="hamburgerMenuContainer" style="justify-content: space-around" class="flexBoxVertical matchParentHeightOnly"> 
+                <div class="individualLine matchParentWidthOnly"></div>
+                <div class="individualLine matchParentWidthOnly"></div>
+                <div class="individualLine matchParentWidthOnly"></div>
+            </div>
+        </div>
+        <script type="text/javascript" language="javascript">
+            
+        </script> 
+        <!--========================================================================================================================--> 
+        <!--Main shared layout for all 4 types of users-->
+        <!--There is a probability that the CSS is not updated instantly-->
+        <!--DESIGN FROM LEFT TO RIGHT: Logo, navBar, identity, username[if signed in] / log in button[if the user is not signed in] -->
+        <header class="matchParentWidth flexBoxHorizontal spaceOut_row">
+            <nav class="matchParentHeight flexBoxHorizontal spaceOut_row">
+                <a class="navElement flexBoxHorizontal gravity cursor" title="Home">
+                    Home
+                </a>
+                @{
+                    <!--Add the settings button for the customer-->
+                    if (role != null)
+                    {
+                        if (role.Equals("Customer"))
+                        {
+                            <a href="@Url.Action("Feedback", "Customer")" class="navElement flexBoxHorizontal gravity cursor" title="Feedback">
+                                Feedback
+                            </a>
+                            <a href="@Url.Action("Product", "Customer")" class="navElement flexBoxHorizontal gravity cursor" title="Products">
+                                Product
+                            </a>
+                            <a href="@Url.Action("Profile", "Customer")" class="navElement flexBoxHorizontal gravity cursor" title="Profile">
+                                Profile
+                            </a>
+                        }
+                        else if (role.Equals("Sales Personnel"))
+                        {
+                            <a href="@Url.Action("ViewAllCustomers")" class="navElement flexBoxHorizontal gravity cursor" title="View All Customers"> 
+                                View All Customers
+                            </a>
+                            <a href="@Url.Action("CreateCustomer")" class="navElement flexBoxHorizontal gravity cursor" title="Create Customer"> 
+                                Create Customer
+                            </a>
+                            <a href="@Url.Action("RedeemVoucher")" class="navElement flexBoxHorizontal gravity cursor" title="Redeem Cash Voucher"> 
+                                Redeem Cash Voucher
+                            </a>
+
+                        }
+                        else if (role.Equals("Marketing Manager"))
+                        {
+                            <a href="@Url.Action("Index", "MarketManager")" class="navElement flexBoxHorizontal gravity cursor" title="Feedback">
+                                View Feedback
+                            </a>
+                            <a href="@Url.Action("ViewResponse", "MarketManager")"class="navElement flexBoxHorizontal gravity cursor" title="Response">
+                                View Response
+                            </a>
+                            <a href="@Url.Action("ViewTransaction", "MarketManager")"class="navElement flexBoxHorizontal gravity cursor" title="View Transactions">
+                                View Transactions
+                            </a>
+                            <a href="@Url.Action("Profile", "Customer")" class="navElement flexBoxHorizontal gravity cursor" title="Profile">
+                                Profile
+                            </a>
+                        }
+                        else if (role.Equals("Product Manager"))
+                        {
+                            <a href="@Url.Action("Profile", "Customer")" class="navElement flexBoxHorizontal gravity cursor">
+                                Profile
+                            </a>
+                        }
+                    }
+                }
+            </nav>
+            <!--Check for the role of the user-->
+            @{
+                if (role != null)
+                {
+                    if (role.Equals("Sales Personnel"))
+                    {
+                        <div class = "roleIdentifier matchParentHeight gravity flexBoxHorizontal"> 
+                            <span style="color: red">Sales Personnel</span> 
+                        </div>
+                    }
+                    else if (role.Equals("Customer"))
+                    {
+                        <div class = "roleIdentifier matchParentHeight gravity flexBoxHorizontal">
+                            <span style="color: red">Customer</span> 
+                        </div>
+                    }
+                    else if (role.Equals("Marketing Manager"))
+                    {
+                        <div class = "roleIdentifier matchParentHeight gravity flexBoxHorizontal">
+                            <span style="color: red">MarketingManager</span> 
+                        </div>
+                    }
+                    else if (role.Equals("Product Manager"))
+                    {
+                        <div class = "roleIdentifier matchParentHeight gravity flexBoxHorizontal">
+                            <span style="color: red">ProductManager</span> 
+                        </div>
+                    }
+                }
+            }
+            <!--Now check for whether the user is signed in or not-->
+            @{
+                if (role != null && username != null)
+                {
+                    if (!role.ToString().Length.Equals(0))
+                    {
+                        <!--Display a welcome message to the user 'Welcome, [USER]'-->
+                        @if (role.Equals("Customer"))
+                        {
+                            <div class="flexBoxHorizontal matchParentHeightOnly gravity"> 
+                                <a href="@Url.Action("ShoppingCart", "Customer")" title="Shopping cart">
+                                    <span class="material-icons">shopping_cart</span>
+                                </a> 
+                            </div> 
+                        }
+                        <div title="Click on me to sign out" class="signInBar matchParentHeightOnly flexBoxHorizontal gravity">
+                            Welcome, @username!
+                        </div>
+                    }
+                }
+                else
+                {
+                    <!--Display the sign in button-->
+                    <!--This would be the sign in button that would responsible for redirecting the user--> 
+                    <!--This button would be redirecting the user to the CustomerLoginPage--> 
+                    <a href="@Url.Action("Login","LoginCustomer")" class="signInBar matchParentHeight flexBoxHorizontal gravity roundedEdgesLight" style="background: linear-gradient(45deg, lightblue, orange, yellow); font-size: 25px; text-decoration: none; color: black">
+                        Sign in
+                </a>
+                }
+            }
+        </header>
+        <!--Insert a happy birthday banner over here IDK-->
+        @{
+            if (isOpened != null)
+            {
+                //If it is the user's birthday
+                //HttpContext.Current.Request.Url.AbsoluteUri; to retrieve the current Uri of the page 
+                <div class="banner matchParentWidthOnly flexBoxHorizontal gravity"> 
+                    <div class="card" style="margin: 22px; text-align: center;"> 
+                        <h3 class="card-title">It is your birthday month!</h3>
+                        <p class="card-text">
+                            <span class="material-icons">cake</span>
+                            Enjoy up to 15% off for all of our products that we have at ZZFashion!
+                        </p>
+                        <button href="@Url.Action("Product", "Customer")" class="btn btn-primary">Let's go!</button>
+                    </div>
+                </div>
+            } 
+        } 
+        <main> <!--Parent is the <body> tag--> 
+            @RenderBody()
+        </main>
+        <footer class="matchParentWidth flexBoxHorizontal gravity">
+           &copy; 2022 All Rights Reserved
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>

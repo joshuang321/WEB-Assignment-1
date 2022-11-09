@@ -1,0 +1,218 @@
+﻿/*Customer.css written by Li Zhe Yun*/
+/*Dedicated stylesheet for use by 
+    Full view: CreateFeedback.cshtml, Feedback.cshtml, Profile.cshtml, Change.cshtml
+    Partial view: _CustomerFeedbackViewTemplate.cshtml, _CustomerProfile.cshtml, _Layout.cshtml 
+*/
+/*USED IN PARTIAL VIEW*/
+div.over-feedback-customer-grp {
+    height: 550px;
+}
+
+aside.feedback-customer-grp {
+    flex: 0.75; 
+}
+
+article.feedback-customer-grp {
+    flex: 3;
+}
+
+div.row-group {
+    height: 50px; 
+}
+
+div.icon-container {
+    flex: 0.5;
+}
+
+div.text-container {
+    flex: 2; 
+}
+
+div.icon-box-decoration {
+    width: 35px;
+    height: 35px;
+}
+
+div.icon-box-decoration:nth-of-type(n + 1) {
+    background-color: blue;
+    color: white; 
+}
+
+div.icon-box-decoration:nth-of-type(n){
+    background-color: darkgreen; 
+    color: white; 
+}
+
+div.sub-nav-body{
+    margin: 15px;
+    overflow-y: scroll; 
+}
+
+div.button-container{
+    height: 50px;  
+    background: linear-gradient(45deg, lightgreen, yellow, lightgreen); 
+}
+
+div.feedback-list{
+    height: 450px;
+}
+/*===================================================*/
+/*USED IN CreateFeedback.cshtml ONLY!!!!!!!!!!!*/
+div.main-feedback-body{
+    margin: 10px; 
+}
+
+.main {
+    width: 95%;
+}
+
+.main-internal-1 {
+    width: 90%;
+}
+
+div.labelPortion {
+    flex: 0.5; 
+}
+
+div.inputPortion {
+    flex: 2; 
+}
+
+div.dragAndDrop {
+    height: 100px; 
+}
+
+/*===================================================*/
+/*USED IN Feedback.cshtml ONLY!!!!!!!!!!!!!*/
+/*The feedback that the user has made will be displayed within this box*/
+div.feedback-list-cluster {
+    overflow-y: scroll;
+    height: 450px; 
+}
+
+div.feedback-inbox-controls {
+    margin: 2px;
+    height: 50px;
+}
+
+div.feedback-inbox-controls-internal-wrapper {
+    width: 45%; 
+}
+
+div.function-holder {
+    flex: 1; 
+}
+
+div.feedback-box-info {
+    height: 700px;
+}
+
+div.selector-container {
+    flex: 0.2; 
+}
+
+div.feedback-info-group {
+    flex: 2.5; 
+    background: linear-gradient(45deg, lightblue, white, lightblue); 
+}
+
+div.feedback-subject {
+    height: 20%; 
+}
+
+div.feedback-detail {
+    flex: 3; 
+}
+
+div.feedback-meta {
+    flex: 0.2; 
+}
+
+div.base {
+    margin: 10px;
+}
+
+/*Adding on to existing bootstrap*/
+form {
+    width: 85%; 
+}
+
+/*=============================================================*/
+/*Used in Profile.cshtml*/
+div#UserEmailAddr{
+    width: 80%;
+}
+
+div.toggler {
+    width: 19.9999%;
+}
+
+/*=============================================================*/
+/*Used in Product.cshtml*/
+div.baseProductImage {
+    width: 35%;
+    height: 150px; 
+}
+
+/*=============================================================*/
+/*Used in ShoppingCart.cshtml*/
+div.itemConfig {
+    height: 100px; 
+}
+
+div.rowHeight {
+    height: 200px; 
+}
+
+div.itemBoxConfig {
+    width: 33.33333%; 
+}
+
+/*=============================================================*/
+/*Activate overlay error message*/
+div.noBlankFields, div.birthdayBase, div.productInfo{
+   background-color: rgb(0, 0, 0, 0.6); 
+   z-index: 8;
+   position: fixed;  
+}
+
+div.errorMessageBox, div.birthdayGreetings {
+    background-color: white; 
+    width: 50%; 
+    height: 50%; 
+}
+
+div.iconBox {
+    flex: 0.2; 
+}
+
+div.errorDesc {
+    flex: 2.8; 
+}
+
+/*=============================================================*/
+/*Add the relevant media queries*/
+@media (max-width: 900px){
+    /*=========================================================*/
+    /*Apply to product.cshtml*/
+    /*Make sure that the row changes into a column*/
+    div.row {
+       display: block;  
+    }
+
+    div.itemBoxConfig {
+        width: 100%; 
+    }
+
+    /*Apply to the overlay box which is responsible for displaying the contents of the feedback the customer has made*/
+    .card{
+
+    }
+
+    /*=========================================================*/
+    /*Apply to all views which are using */
+    /*Correct the distorted the emoticon when the width of the screen is less than 900px*/
+    span#emoticonText {
+        font-size: 55px;
+    }
+}

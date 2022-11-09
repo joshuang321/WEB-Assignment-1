@@ -1,0 +1,99 @@
+﻿@using Microsoft.AspNetCore.Http; 
+
+@{
+    ViewData["Title"] = "LoginVerification";
+    Layout = "_LoginViewTemplate";
+    string info = Context.Session.GetString("Status"); 
+    string _autofocus = "autofocus";
+    string accessCode = Context.Session.GetString("TempAccessCode"); 
+}
+<!--
+    Done by: Li Zhe Yun
+    Form logic handled by LoginCustomerController.cs
+
+    To debug this webpage, please ensure that the URL in your searchbar IS
+    https://localhost:44330/LoginCustomer/LoginVerification  
+-->
+<!--
+Brief description: 
+
+This would be the page where the user would be entering a 4-digit code that will be sent to his or her mailbox
+POP3 protocol to send and retrieve from the mailbox (gmail, outlook)
+
+(Don't know whether I should include another layout which prompts the user for his or her email address FIRSt
+before proceeding to send a verification code to the email address [Y'know for security purposes])
+-->
+
+<!--This webpage can only be accessed through LoginVerificationPromptEmail.cshtml-->
+<div class="matchParent"> 
+    <h1 style="text-align: center">Account Recovery</h1>
+    <!--Put another button that -->
+    <div class="status flexBoxHorizontal roundedEdgesLight borderVisibleLight gravity">
+        <small style="text-align: center"><small>@info</small></small> 
+    </div>
+    <br />
+    <form asp-controller="LoginCustomer" asp-action="SubmitVerificationCode" method="post" class="matchParent"> 
+        <!--The fieldset tag will copy from the <form> tag-->
+        <fieldset class="flexBoxVertical matchParent"> 
+            <!--This flexbox is used to contain the 'Enter your 4-digit OTP...' message-->
+            <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                    <div class="main-internal-1 flexBoxVertical matchParentHeightOnly align-left-row">
+                        <small>Go to <a onclick="window.open('/LoginCustomer/VerificationCodeRetrievalPortal')">this website</a> to get your verification code</small>
+                        <h6 style="text-align: center">Your temporary access code to that website is: <span class="text-danger">@accessCode</span></h6>
+                        <p class="text-danger">DO NOT CLOSE THIS PAGE</p>
+                    </div> 
+                </div> 
+            </div> 
+            <br />
+            <!--This flexbox is used to contain the email string that the user has input-->
+            <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                    <div class="main-internal-1 flexBoxHorizontal matchParentHeightOnly align-left-row">
+                        <!--At this point, all elements will be centralized in the middle-->
+                        <div class="flexBoxHorizontal matchParent spaceOut_row roundedEdgesLight"> 
+                            @{
+                                int times = 0;
+                                do
+                                {
+                                    string boxIdentifier = $"Box{times}"; 
+                                    <input maxlength="1" name="@boxIdentifier" type="text" class="codeBox flexBoxHorizontal gravity roundedEdgesLight borderVisibleLight"
+                                    @{
+                                        //Add the autofocus attribute
+                                        if (times.Equals(0))
+                                        {
+                                            @_autofocus 
+                                        }
+                                    } />
+                                    if (times < 5)
+                                    {
+                                        <p>-</p>
+                                    }
+                                    times++;
+                                }
+                                while (times < 6); 
+                            }
+                        </div>
+                    </div> 
+                </div> 
+            </div> 
+            <br />
+            <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                    <div class="main-internal-1 flexBoxHorizontal matchParentHeightOnly align-left-row">
+                        <!--At this point, all elements will be centralized in the middle-->
+                        <button class="matchParentWidthOnly roundedEdgesLight" id="submitCode" type="submit">Submit</button>
+                    </div> 
+                </div> 
+            </div> 
+            <br /> 
+            <div class="flexBoxHorizonal matchParentWidthOnly align-left-row"> 
+                <div class="main flexBoxHorizontal gravity matchParentHeightOnly">
+                    <div class="main-internal-1 flexBoxHorizontal matchParentHeightOnly align-left-row">
+                        <a href="@Url.Action("Login", "LoginCustomer")">Go back to login</a>
+                    </div> 
+                </div> 
+            </div> 
+        </fieldset> 
+    </form>
+</div>

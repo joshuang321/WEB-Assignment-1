@@ -1,0 +1,43 @@
+﻿@model IEnumerable<web_asignment1_Y2S1_2022.Models.Response>
+
+@{
+    ViewData["Title"] = "ViewResponse";
+}
+@if (Model.ToList().Count > 0)
+{
+    <div class="table-responsive">
+        <table id="viewResponse" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Response ID</th>
+                    <th>Feedback ID</th>
+                    <th>MemberID</th>
+                    <th>Staff ID</th>
+                    <th>Post Date and Time</th>
+                    <th>Text</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ResponseID.ToString()</td>
+                        <td>@item.FeedbackID.ToString()</td>
+                        <td>@item.MemberID</td>
+                        <td>@item.StaffID</td>
+                        <td>@item.DateTimePosted.ToString()</td>
+                        <td>@item.Text</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a asp-action="Index">Back to HomePage</a>
+    </div>
+}
+else
+{
+    <span style="color:red">No record found!</span>
+}

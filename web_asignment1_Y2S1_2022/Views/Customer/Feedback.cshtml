@@ -1,0 +1,163 @@
+﻿@{
+    Layout = "_CustomerFeedbackViewTemplate"; 
+    ViewData["Title"] = "Feedback";
+    List<Feedback> data = ViewBag.Feedback as List<Feedback>; //Change this variable value to null to test the else block 
+    var isAnswered =  ViewBag.IsAnswered; 
+    string modify = "linear-gradient(45deg, lightgreen, white, lightgreen)"; 
+    string answered = "Response has been answered"; 
+    string not_answered = "Not answered as of now"; 
+    string mood = Context.Session.GetString("Mood"); 
+}
+
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http; 
+
+<!--
+Done by: Li Zhe Yun
+This website only displays all the feedback that the customer has made... LOL
+
+To debug this webpage, please ensure that the URL in your searchbar IS
+https://localhost:44330/Customer/Feedback
+-->
+
+<!--Inside the article tag-->
+<div class="main-feedback-body">
+    <h1><b>All Feedbacks</b></h1>
+    <div class="feedback-list roundedEdgesMedium flexBoxVertical matchParentWidthOnly borderVisibleMedium" style="align-items: center"> 
+        <div class="feedback-inbox-controls roundedEdgesMedium flexBoxHorizontal matchParentWidthOnly"> 
+            <!--Feedback box controls-->
+            <div class="feedback-inbox-controls-internal-wrapper matchParentHeightOnly flexBoxHorizontal gravity"> 
+                <div class="function-holder matchParentHeightOnly flexBoxHorizontal gravity">
+                    <span class="material-icons cursor" title="Refresh">refresh</span>
+                </div>
+                <div class="function-holder matchParentHeightOnly flexBoxHorizontal gravity">
+                    <div class="flexBoxHorizontal gravity matchParentHeightOnly"> 
+                        <input id="masterCheckbox" type="checkbox" /> 
+                        <label style="font-size: 20px">Select All</label>
+                    </div> 
+                </div>
+                <div class="function-holder matchParentHeightOnly flexBoxHorizontal gravity"> 
+                    <span class="material-icons cursor" title="Bookmark">bookmark</span>
+                </div>
+                <div class="function-holder matchParentHeightOnly flexBoxHorizontal gravity"> 
+                    <span class="material-icons cursor" title="Delete">delete</span>
+                </div>
+            </div> 
+        </div>
+        <div class="feedback-list-cluster roundedEdgesLight matchParentWidthOnly flexBoxVertical" style="align-items: center"> 
+            <!--All the feedback must show up here-->
+            @{
+                if (data != null)
+                {
+                    if (data.Count != 0)
+                    {
+                        foreach (Feedback f in data)
+                        {
+                            <form class="flexBoxHorizontal matchParentWidthOnly borderVisibleLight roundedEdgesLight"> 
+                                <div class="selector-container roundedEdgesLight flexBoxHorizontal gravity matchParentHeightOnly"> 
+                                    <div class="flexBoxHorizontal gravity matchParentHeightOnly">
+                                        <input class="subCheckbox" type="checkbox" />
+                                    </div>
+                                </div>
+                                <!--Responsible for applying the color--> 
+                                <div class="feedback-info-group flexBoxHorizontal gravity roundedEdgesLight matchParentHeightOnly" 
+                                    style="background: @{
+                                        if (isAnswered != null)
+                                        {
+                                            @modify
+                                        } 
+                                    }"> 
+                                    <div class="feedback-detail flexBoxVertical matchParentHeightOnly"> 
+                                        <div class="feedback-subject matchParentWidthOnly"> 
+                                            <h6><b>@f.Title</b></h6>
+                                        </div>
+                                        <br />
+                                        @{
+                                            if (isAnswered != null)
+                                            {
+                                                @answered
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">@not_answered</span>
+                                            }
+                                        }
+                                        <br /> 
+                                        <div class="matchParentWidthOnly" style="height: 95%"> 
+                                            <small class="flexBoxHorizontal matchParentWidthOnly" style="text-align: justify">
+                                                @{
+                                                    if (f.Text.Length > 130)
+                                                    {
+                                                        @f.Text
+                                                    }
+                                                    else
+                                                    {
+                                                        @f.Text
+                                                    }
+                                                }
+                                            </small>
+                                        </div>
+                                    </div>  
+                                </div>
+                                <div class="feedback-meta flexBoxVertical matchParentHeightOnly gravity"> 
+                                    <!--Store the date and time over here--> 
+                                    <a asp-controller="Customer" asp-action="GetFeedbackDetails"  asp-route-id="@f.FeedbackID" class="roundedEdgesLight matchParent flexBoxHorizontal gravity" style="background-color: darkgreen"> 
+                                        <span class="material-icons" style="font-size: 40px; color: orange">arrow_right</span>
+                                    </a> 
+                                </div>
+                            </form>
+                            if (!data.IndexOf(f).Equals(data.Count - 1))
+                            {
+                                <br />
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //Display an error message which states that the data cannot be displayed 
+                        <div class="matchParent flexBoxVertical gravity">
+                            <span style="color: red">You have not sent any feedbacks yet...</span>
+                            <br /> 
+                            <span id="emoticonText" style="font-size: 130px; color: lightgray">@mood</span>
+                            <br /> 
+                            <small>Dissatisfied with our service? Or is there anything you want ZZFashion to improve on? Tell us what you think by giving us a feedback</small>
+                            <br />
+                            <a href="@Url.Action("CreateFeedback", "Customer")" class="btn btn-primary" style="color: white">Create feedback!</a>
+                        </div> 
+                    }
+                }
+            }
+        </div>
+    </div>
+    <script type="text/javascript" language="javascript"> 
+        let checkboxesChecked = 0; 
+        document.getElementById("masterCheckbox").addEventListener("click", () => {
+            if (document.getElementById("masterCheckbox").checked){
+                for (let i = 0; i < document.getElementsByClassName("subCheckbox").length; ++i){
+                     document.getElementsByClassName("subCheckbox")[i].checked = true; 
+                }
+            }
+            else {
+                for (let i = 0; i < document.getElementsByClassName("subCheckbox").length; ++i){
+                     document.getElementsByClassName("subCheckbox")[i].checked = false; 
+                }
+            }
+        }); 
+        for (let i = 0; i < document.getElementsByClassName("subCheckbox").length; ++i){
+            document.getElementsByClassName("subCheckbox")[i].addEventListener("click", ()=>{
+                if (document.getElementsByClassName("subCheckbox")[i].checked){
+                    ++checkboxesChecked; 
+                    if (checkboxesChecked === document.getElementsByClassName("subCheckbox").length && !document.getElementById("masterCheckbox").checked){
+                        document.getElementById("masterCheckbox").checked = true;
+                    }
+                }
+                else {
+                    --checkboxesChecked; 
+                    if (checkboxesChecked === 0 && document.getElementById("masterCheckbox").checked){
+                        document.getElementById("masterCheckbox").checked = false; 
+                    }
+                }
+            }); 
+        } 
+    </script>
+</div> 

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<web_asignment1_Y2S1_2022.Models.Customer>
+
+@{
+    ViewData["Title"] = "ViewAllCustomers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ViewAllCustomers</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MGender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MBirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MCountry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MTelNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MEmailAddr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MGender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MBirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MCountry)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MTelNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MEmailAddr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

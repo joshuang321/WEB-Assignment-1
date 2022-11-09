@@ -1,0 +1,39 @@
+﻿@model IEnumerable<web_asignment1_Y2S1_2022.Models.Customer>
+
+@if (Model.ToList().Count > 0)
+{
+    <div class="table-responsive">
+        <table id="viewCustomer" class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Member</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Country</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MemberID.ToString()</td>
+                        <td>@item.MName</td>
+                        <td>
+                            @item.MGender
+                        </td>
+                        <td>@item.MCountry</td>
+                        <td>
+                            <a asp-action="Details" asp-controller="Staff"
+                               asp-route-id="@item.MemberID">Details</a> |
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <span style="color:red">No record found!</span>
+}
